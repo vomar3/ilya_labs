@@ -31,7 +31,7 @@ int main(int args, char *argv[]) {
 
     if (x <= 0) {
         printf("Error a negative number is not suitable for processing\n");
-        return -1;
+        return -2;
     }
 
     if (argv[1][1] == 'h') {
@@ -69,6 +69,7 @@ int main(int args, char *argv[]) {
     } else if (argv[1][1] == 'e') {
         if (x > 10) {
             printf ("An invalid number for this flag\n");
+            return -1;
         } else {
 
             for (int i = 1; i <= 10; ++i) {
@@ -81,6 +82,7 @@ int main(int args, char *argv[]) {
                         printf("%10lli|", answer);
                     } else {
                         printf("Error\n");
+                        return -3;
                     }
                 }
                 printf("\n");
@@ -92,7 +94,7 @@ int main(int args, char *argv[]) {
         for (long long int i = 0; i <= x; ++i) {
             if ((unsigned long long int)(sum + i) > LLONG_MAX) {
                 printf("type overflow\n");
-                return -1;
+                return -3;
             }
             sum += i;
         }
@@ -102,12 +104,14 @@ int main(int args, char *argv[]) {
 
         if (factorial(x) == -1){
             printf("type overflow\n");
+            return -3;
         }else {
             printf("Factorial: %lld\n", factorial(x));
         }
 
     } else {
         printf("input error\n");
+        return -1;
     }
 
     return 0;
