@@ -106,35 +106,31 @@ int main(int args, char *argv[]) {
                 printf("Invalid input\n");
                 return -1;
             } else {
-                long double epsilon, coef1, coef2, coef3;
+                long double epsilon_t, coef1_t, coef2_t, coef3_t;
 
-                if ((str_to_long_double(argv[2], &epsilon) != 0)
-                || (str_to_long_double(argv[3], &coef1) != 0)
-                || (str_to_long_double(argv[4], &coef2) != 0)
-                || (str_to_long_double(argv[5], &coef3) != 0)) {
-                    printf("Invalid input\n");
-                    return -1;
-                } else {
-
-                    printf("\n%Lf\n", coef3);
-
-                }
-
-                if (coef1 <= epsilon || coef2 <= epsilon || coef3 <= epsilon) {
+                if (str_to_long_double(argv[2], &epsilon_t) == -2
+                || str_to_long_double(argv[3], &coef1_t) == -2
+                || str_to_long_double(argv[4], &coef2_t) == -2
+                || str_to_long_double(argv[5], &coef3_t) == -2){
                     printf("Invalid input\n");
                     return -1;
                 }
 
-                if (!(check_overflow(coef1) == 0
-                && check_overflow(coef2) == 0
-                && check_overflow(coef3) == 0)) {
+                if (coef1_t <= epsilon_t || coef2_t <= epsilon_t || coef3_t <= epsilon_t) {
+                    printf("Invalid input\n");
+                    return -1;
+                }
+
+                if (!(check_overflow(coef1_t) == 0
+                && check_overflow(coef2_t) == 0
+                && check_overflow(coef3_t) == 0)) {
                     printf("Element overflow\n");
                     return -3;
                 }
 
-                if (fabsl(coef1 * coef1 + coef2 * coef2 - coef3 * coef3) <= epsilon
-                || fabsl(coef1 * coef1 + coef3 * coef3 - coef2 * coef2) <= epsilon
-                || fabsl(coef2 * coef2 + coef3 * coef3 - coef1 * coef1) <= epsilon) {
+                if (fabsl(coef1_t * coef1_t + coef2_t * coef2_t - coef3_t * coef3_t) <= epsilon_t
+                || fabsl(coef1_t * coef1_t + coef3_t * coef3_t - coef2_t * coef2_t) <= epsilon_t
+                || fabsl(coef2_t * coef2_t + coef3_t * coef3_t - coef1_t * coef1_t) <= epsilon_t) {
                     printf("a right-angled triangle\n");
                     return 0;
                 } else {
