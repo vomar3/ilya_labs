@@ -6,8 +6,11 @@
 #include <string.h>
 
 long long int factorial(long long int number);
+
 void sys_of_calc(long long int number);
+
 long long int my_pow(long long int footing, long long int degree);
+
 int str_to_lli(const char *str, long long int *x, int system);
 
 int main(int args, char *argv[]) {
