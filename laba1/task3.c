@@ -201,13 +201,13 @@ void answers(long double a, long double b, long double c, long double epsilon) {
         printf("Discriminant < 0. There are no solutions\n");
     } else if (fabsl(discriminant) <= epsilon) {
         long double x = -b / (2.0 * a);
-        printf("%Lf\n", x);
+        printf("x = %Lf\n", x);
     } else {
         discriminant = sqrtl(discriminant);
 
         long double x1 = (-b + discriminant) / (2.0 * a);
         long double x2 = (-b - discriminant) / (2.0 * a);
 
-        printf("%Lf %Lf\n", x1, x2);
+        printf("x1 = %Lf x2 = %Lf\n", x1, x2);
     }
 }
