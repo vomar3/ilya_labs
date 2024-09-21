@@ -21,8 +21,6 @@ int main(int args, char *argv[]) {
         return -1;
     }
 
-    errno = 0;
-
     switch (argv[1][1]) {
         case 'q':
 
@@ -36,6 +34,11 @@ int main(int args, char *argv[]) {
                 && (str_to_long_double(argv[3], &coef1) == 0)
                 && (str_to_long_double(argv[4], &coef2) == 0)
                 && (str_to_long_double(argv[5], &coef3) == 0))) {
+                    printf("Invalid input\n");
+                    return -1;
+                }
+
+                if (epsilon < 0) {
                     printf("Invalid input\n");
                     return -1;
                 }
@@ -116,6 +119,11 @@ int main(int args, char *argv[]) {
                     return -1;
                 }
 
+                if (epsilon_t < 0) {
+                    printf("Invalid input\n");
+                    return -1;
+                }
+
                 if (coef1_t <= epsilon_t || coef2_t <= epsilon_t || coef3_t <= epsilon_t) {
                     printf("Invalid input\n");
                     return -1;
@@ -149,14 +157,30 @@ int main(int args, char *argv[]) {
 }
 
 int str_to_long_double(const char *str, long double *result) {
-    char *end;
-    errno = 0;
-    *result = strtold(str, &end);
 
-    if ((errno == ERANGE) && (*result == HUGE_VAL || *result == -HUGE_VAL)) {
+    int dots = 0;
+    for (int i = 0; i < strlen(str); ++i) {
+        if ((str[i] < '0' || str[i] > '9') && str[i] != '.') {
+            printf("the problem with the element\n");
+            return -2;
+        }
+        else if (str[i] == '.') {
+            dots++;
+        }
+    }
+
+    if (dots != 1) {
         printf("the problem with the element\n");
         return -2;
-    } else if (*result == 0 && errno == ERANGE) {
+    }
+
+    char *end = NULL;
+    *result = strtold(str, &end);
+
+    if (*result == HUGE_VAL || *result == -HUGE_VAL) {
+        printf("the problem with the element\n");
+        return -2;
+    } else if (*result == 0 && end == str) {
         printf("the problem with the element\n");
         return -2;
     } else if (*end != '\0') {
@@ -168,14 +192,13 @@ int str_to_long_double(const char *str, long double *result) {
 }
 
 int str_to_long_int(const char *str, long int *number, int system) {
-    char *end;
-    errno = 0;
+    char *end = NULL;
     *number = strtol(str, &end, system);
 
-    if (errno == ERANGE && (*number == LONG_MAX || *number == LONG_MIN)) {
+    if (*number == LONG_MAX || *number == LONG_MIN) {
         printf("the problem with the element\n");
         return -2;
-    } else if (errno != 0 && *number == 0) {
+    } else if (end == str && *number == 0) {
         printf("the problem with the element\n");
         return -2;
     } else if (*end != '\0') {
