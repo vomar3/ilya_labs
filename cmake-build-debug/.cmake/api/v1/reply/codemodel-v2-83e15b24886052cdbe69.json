@@ -16,7 +16,10 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2,
+						3,
+						4
 					]
 				}
 			],
@@ -32,7 +35,10 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2,
+						3,
+						4
 					]
 				}
 			],
@@ -40,15 +46,36 @@
 			[
 				{
 					"directoryIndex" : 0,
+					"id" : "ilya10::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ilya10-Debug-213f3c37a97bd2f19e87.json",
+					"name" : "ilya10",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
 					"id" : "ilya3::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ilya3-Debug-755d9ec8874e18b9060f.json",
+					"jsonFile" : "target-ilya3-Debug-45c7776878fd91e141d0.json",
 					"name" : "ilya3",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
+					"id" : "ilya4::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ilya4-Debug-8b94548c1a4d9fafdf7a.json",
+					"name" : "ilya4",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ilya8::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ilya8-Debug-8d1684c0a339bb7bd942.json",
+					"name" : "ilya8",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
 					"id" : "ilya_laba1::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ilya_laba1-Debug-44149d603dcfcb7964b7.json",
+					"jsonFile" : "target-ilya_laba1-Debug-70cc0b28fda69a3497a8.json",
 					"name" : "ilya_laba1",
 					"projectIndex" : 0
 				}

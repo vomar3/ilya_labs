@@ -49,11 +49,11 @@ cmake_ninja_workdir = C$:/Users/lasto/CLionProjects/ilya_laba1/cmake-build-debug
 
 build cmake_object_order_depends_target_ilya_laba1: phony || CMakeFiles/ilya_laba1.dir
 
-build CMakeFiles/ilya_laba1.dir/laba1/task1.c.obj: C_COMPILER__ilya_laba1_unscanned_Debug C$:/Users/lasto/CLionProjects/ilya_laba1/laba1/task1.c || cmake_object_order_depends_target_ilya_laba1
-  DEP_FILE = CMakeFiles\ilya_laba1.dir\laba1\task1.c.obj.d
+build CMakeFiles/ilya_laba1.dir/laba1/task1/task1.c.obj: C_COMPILER__ilya_laba1_unscanned_Debug C$:/Users/lasto/CLionProjects/ilya_laba1/laba1/task1/task1.c || cmake_object_order_depends_target_ilya_laba1
+  DEP_FILE = CMakeFiles\ilya_laba1.dir\laba1\task1\task1.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\ilya_laba1.dir
-  OBJECT_FILE_DIR = CMakeFiles\ilya_laba1.dir\laba1
+  OBJECT_FILE_DIR = CMakeFiles\ilya_laba1.dir\laba1\task1
 
 
 # =============================================================================
@@ -63,7 +63,7 @@ build CMakeFiles/ilya_laba1.dir/laba1/task1.c.obj: C_COMPILER__ilya_laba1_unscan
 #############################################
 # Link the executable ilya_laba1.exe
 
-build ilya_laba1.exe: C_EXECUTABLE_LINKER__ilya_laba1_Debug CMakeFiles/ilya_laba1.dir/laba1/task1.c.obj
+build ilya_laba1.exe: C_EXECUTABLE_LINKER__ilya_laba1_Debug CMakeFiles/ilya_laba1.dir/laba1/task1/task1.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\ilya_laba1.dir
@@ -82,11 +82,11 @@ build ilya_laba1.exe: C_EXECUTABLE_LINKER__ilya_laba1_Debug CMakeFiles/ilya_laba
 
 build cmake_object_order_depends_target_ilya3: phony || CMakeFiles/ilya3.dir
 
-build CMakeFiles/ilya3.dir/laba1/task3.c.obj: C_COMPILER__ilya3_unscanned_Debug C$:/Users/lasto/CLionProjects/ilya_laba1/laba1/task3.c || cmake_object_order_depends_target_ilya3
-  DEP_FILE = CMakeFiles\ilya3.dir\laba1\task3.c.obj.d
+build CMakeFiles/ilya3.dir/laba1/task3/task3.c.obj: C_COMPILER__ilya3_unscanned_Debug C$:/Users/lasto/CLionProjects/ilya_laba1/laba1/task3/task3.c || cmake_object_order_depends_target_ilya3
+  DEP_FILE = CMakeFiles\ilya3.dir\laba1\task3\task3.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\ilya3.dir
-  OBJECT_FILE_DIR = CMakeFiles\ilya3.dir\laba1
+  OBJECT_FILE_DIR = CMakeFiles\ilya3.dir\laba1\task3
 
 
 # =============================================================================
@@ -96,7 +96,7 @@ build CMakeFiles/ilya3.dir/laba1/task3.c.obj: C_COMPILER__ilya3_unscanned_Debug 
 #############################################
 # Link the executable ilya3.exe
 
-build ilya3.exe: C_EXECUTABLE_LINKER__ilya3_Debug CMakeFiles/ilya3.dir/laba1/task3.c.obj
+build ilya3.exe: C_EXECUTABLE_LINKER__ilya3_Debug CMakeFiles/ilya3.dir/laba1/task3/task3.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\ilya3.dir
@@ -105,6 +105,105 @@ build ilya3.exe: C_EXECUTABLE_LINKER__ilya3_Debug CMakeFiles/ilya3.dir/laba1/tas
   TARGET_FILE = ilya3.exe
   TARGET_IMPLIB = libilya3.dll.a
   TARGET_PDB = ilya3.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target ilya4
+
+
+#############################################
+# Order-only phony target for ilya4
+
+build cmake_object_order_depends_target_ilya4: phony || CMakeFiles/ilya4.dir
+
+build CMakeFiles/ilya4.dir/laba1/task4/task4.c.obj: C_COMPILER__ilya4_unscanned_Debug C$:/Users/lasto/CLionProjects/ilya_laba1/laba1/task4/task4.c || cmake_object_order_depends_target_ilya4
+  DEP_FILE = CMakeFiles\ilya4.dir\laba1\task4\task4.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\ilya4.dir
+  OBJECT_FILE_DIR = CMakeFiles\ilya4.dir\laba1\task4
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target ilya4
+
+
+#############################################
+# Link the executable ilya4.exe
+
+build ilya4.exe: C_EXECUTABLE_LINKER__ilya4_Debug CMakeFiles/ilya4.dir/laba1/task4/task4.c.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\ilya4.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = ilya4.exe
+  TARGET_IMPLIB = libilya4.dll.a
+  TARGET_PDB = ilya4.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target ilya10
+
+
+#############################################
+# Order-only phony target for ilya10
+
+build cmake_object_order_depends_target_ilya10: phony || CMakeFiles/ilya10.dir
+
+build CMakeFiles/ilya10.dir/laba1/task10/task10.c.obj: C_COMPILER__ilya10_unscanned_Debug C$:/Users/lasto/CLionProjects/ilya_laba1/laba1/task10/task10.c || cmake_object_order_depends_target_ilya10
+  DEP_FILE = CMakeFiles\ilya10.dir\laba1\task10\task10.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\ilya10.dir
+  OBJECT_FILE_DIR = CMakeFiles\ilya10.dir\laba1\task10
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target ilya10
+
+
+#############################################
+# Link the executable ilya10.exe
+
+build ilya10.exe: C_EXECUTABLE_LINKER__ilya10_Debug CMakeFiles/ilya10.dir/laba1/task10/task10.c.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\ilya10.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = ilya10.exe
+  TARGET_IMPLIB = libilya10.dll.a
+  TARGET_PDB = ilya10.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target ilya8
+
+
+#############################################
+# Order-only phony target for ilya8
+
+build cmake_object_order_depends_target_ilya8: phony || CMakeFiles/ilya8.dir
+
+build CMakeFiles/ilya8.dir/laba1/task8/task8.c.obj: C_COMPILER__ilya8_unscanned_Debug C$:/Users/lasto/CLionProjects/ilya_laba1/laba1/task8/task8.c || cmake_object_order_depends_target_ilya8
+  DEP_FILE = CMakeFiles\ilya8.dir\laba1\task8\task8.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\ilya8.dir
+  OBJECT_FILE_DIR = CMakeFiles\ilya8.dir\laba1\task8
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target ilya8
+
+
+#############################################
+# Link the executable ilya8.exe
+
+build ilya8.exe: C_EXECUTABLE_LINKER__ilya8_Debug CMakeFiles/ilya8.dir/laba1/task8/task8.c.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\ilya8.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = ilya8.exe
+  TARGET_IMPLIB = libilya8.dll.a
+  TARGET_PDB = ilya8.exe.dbg
 
 
 #############################################
@@ -132,7 +231,13 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
+build ilya10: phony ilya10.exe
+
 build ilya3: phony ilya3.exe
+
+build ilya4: phony ilya4.exe
+
+build ilya8: phony ilya8.exe
 
 build ilya_laba1: phony ilya_laba1.exe
 
@@ -144,7 +249,7 @@ build ilya_laba1: phony ilya_laba1.exe
 #############################################
 # Folder: C:/Users/lasto/CLionProjects/ilya_laba1/cmake-build-debug
 
-build all: phony ilya_laba1.exe ilya3.exe
+build all: phony ilya_laba1.exe ilya3.exe ilya4.exe ilya10.exe ilya8.exe
 
 # =============================================================================
 # Built-in targets
