@@ -17,7 +17,7 @@ int main (int args, char* argv[]) {
     long long int number;
     long long int max = LLONG_MIN;
 
-    if (2 != scanf("%d %s", &system, num) || system < 2 || system > 36) {
+    if ((2 != scanf("%d %s", &system, num) || system < 2 || system > 36) || (strcmp(num, "Stop") == 0)) {
         printf("Invalid input\n");
         return -1;
     }
