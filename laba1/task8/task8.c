@@ -4,10 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if 0
-#define DEBUG
-#endif
-
 long long int str_to_llint(char* str, long long int* number, int system);
 
 int main(int args, char* argv[]) {
@@ -113,9 +109,6 @@ int main(int args, char* argv[]) {
 long long int str_to_llint(char* str, long long int* number, int system) {
     char* end = NULL;
     *number = strtoll(str, &end, system);
-#ifdef DEBUG
-    printf("%lld %s\n", *number, str);
-#endif  // DEBUG
     if (*number == LLONG_MIN || *number == LLONG_MAX) {
         printf("the problem with the element\n");
         return -2;
