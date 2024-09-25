@@ -1,27 +1,23 @@
-#include <string.h>
-#include <stdio.h>
-#include <limits.h>
-#include <stdlib.h>
 #include <ctype.h>
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-enum ERRORS{
-    OK,
-    INPUT_ERROR,
-    OVERFLOW,
-    FILE_ERROR,
-};
+#if 0
+#define DEBUG
+#endif
 
-long long int str_to_llint(const char *str, long long int *number, int system);
+long long int str_to_llint(char* str, long long int* number, int system);
 
 int main(int args, char* argv[]) {
-
     if (args != 3) {
         printf("Input error\n");
         return -1;
     }
 
-    FILE *input = fopen(argv[1], "r");
-    FILE *output = fopen(argv[2], "w");
+    FILE* input = fopen(argv[1], "r");
+    FILE* output = fopen(argv[2], "w");
 
     if (input == NULL || output == NULL) {
         printf("Problems with open file\n");
@@ -38,7 +34,7 @@ int main(int args, char* argv[]) {
     int symbol;
     int count = 0;
     int max_system = -1;
-    char *number = malloc(10 * sizeof(char));
+    char* number = (char*)calloc(100, sizeof(char));
 
     if (number == NULL) {
         printf("Memory allocation error\n");
@@ -57,18 +53,19 @@ int main(int args, char* argv[]) {
         symbol = fgetc(input);
 
         if (!isspace(symbol) && symbol != EOF) {
-
-            if (symbol == '0' && count == 0) continue;
+            if (symbol == '0' && count == 0)
+                continue;
 
             number[count] = (char)(symbol);
             count += 1;
 
-            if ((char)symbol >= '0' && (char)symbol <= '9' && symbol - 47 > max_system) {
+            if ((char)symbol >= '0' && (char)symbol <= '9' &&
+                symbol - 47 > max_system) {
                 max_system = symbol - 47;
-            } else if ((char)symbol >= 'a' && (char)symbol <= 'z' && symbol - 86 > max_system) {
+            } else if ((char)symbol >= 'a' && (char)symbol <= 'z' &&
+                       symbol - 86 > max_system) {
                 max_system = symbol - 86;
-            } else if ((char)symbol < '0' || (char)symbol > 'z'){
-                printf("%c %d\n", (char)symbol, symbol);
+            } else if ((char)symbol < '0' || (char)symbol > 'z') {
                 printf("Input error\n");
 
                 if (input != NULL) {
@@ -81,24 +78,10 @@ int main(int args, char* argv[]) {
                 return -1;
             }
 
-            char *new_number = realloc(number, (sizeof(number) + 1) * sizeof(char));
-            if (new_number == NULL) {
-                printf("Memory error\n");
-                if (input != NULL) {
-                    fclose(input);
-                }
-                if (output != NULL) {
-                    fclose(output);
-                }
-                free(number);
-                return -5;
-            }
-
-            number = new_number;
+            number[count] = '\0';
 
         } else {
-            if (count != 0 && max_system != -1) {
-
+            if (count != 0 && max_system != -1 && number != NULL) {
                 long long int answer = 0;
 
                 if (str_to_llint(number, &answer, max_system) != -2) {
@@ -115,8 +98,6 @@ int main(int args, char* argv[]) {
                 }
             }
 
-            free(number);
-            number = calloc(0, 100);
             count = 0;
             max_system = -1;
         }
@@ -124,16 +105,17 @@ int main(int args, char* argv[]) {
 
     fclose(input);
     fclose(output);
-
     free(number);
 
     return 0;
 }
 
-long long int str_to_llint(const char *str, long long int *number, int system) {
-    char *end = NULL;
+long long int str_to_llint(char* str, long long int* number, int system) {
+    char* end = NULL;
     *number = strtoll(str, &end, system);
-
+#ifdef DEBUG
+    printf("%lld %s\n", *number, str);
+#endif  // DEBUG
     if (*number == LLONG_MIN || *number == LLONG_MAX) {
         printf("the problem with the element\n");
         return -2;
