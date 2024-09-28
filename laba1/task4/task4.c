@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
 
 enum ERRORS{
     OK,
@@ -20,17 +22,12 @@ int main(int args, char *argv[]) {
     }
 
     FILE *input = fopen(argv[2], "r");
-    FILE *output = fopen("output.txt", "w");
+    //FILE *output = fopen("output.txt", "w");
+    FILE *output = NULL;
 
-    if (input == NULL || output == NULL) {
+    if (input == NULL) {
         printf("Problems with open file\n");
-        if (input != NULL) {
-            fclose(input);
-        }
-        if (output != NULL) {
-            fclose(output);
-        }
-
+        fclose(input);
         return FILE_ERROR;
     }
 
@@ -42,25 +39,51 @@ int main(int args, char *argv[]) {
             return INPUT_ERROR;
         } else {
             argv[1][1] = argv[1][2];
+            argv[1][2] = '\0';
+            output = fopen(argv[3], "w");
 
+            if (output == NULL) {
+                printf("Problems with open file\n");
+                fclose(input);
+                return FILE_ERROR;
+            }
         }
-    }
+    } else {
+        char *output_path = (char *) malloc((strlen(argv[2]) + 5) * sizeof(char));
+        if (output_path == NULL) {
+            printf("input error\n");
+            if (input != NULL) fclose(input);
+            free(output_path);
+            return INPUT_ERROR;
+        }
 
+        char *last = strrchr(argv[2], '/');
+        if (last == NULL) {
+            strcpy(output_path, "out_");
+            strcat(output_path, argv[2]);
+            output_path[strlen(argv[2]) + 4] = '\0';
+        } else {
+            last++;
+            unsigned long long int len_without_last = strlen(argv[2]) - strlen(last);
+            strncpy(output_path, argv[2], len_without_last);
+            strcat(output_path, "out_");
+            strcat(output_path, last);
+            output_path[strlen(argv[2]) + 4] = '\0';
+        }
+
+        output = fopen(output_path, "w");
+        if (output == NULL) {
+            printf("Problems with open file\n");
+            if (input != NULL) fclose(input);
+            free(output_path);
+            return FILE_ERROR;
+        }
+
+        free(output_path);
+    }
 
     switch (argv[1][1]) {
 
-        case 'n':
-            if (argv[1][2] != 'd' && argv[1][2] != 'i' && argv[1][2] != 's' && argv[1][2] != 'a') {
-                printf("input error\n");
-                return INPUT_ERROR;
-            }
-
-            if (argv[1][3] != '\0') {
-                printf("input error\n");
-                return INPUT_ERROR;
-            }
-
-            break;
         case 'd':
 
             if (argv[1][2] != '\0') {
@@ -153,6 +176,11 @@ int main(int args, char *argv[]) {
                 }
             }
             break;
+        default:
+            printf("input error\n");
+            if (output != NULL) fclose(output);
+            if (input != NULL) fclose(input);
+            return INPUT_ERROR;
     }
 
     fclose(input);
