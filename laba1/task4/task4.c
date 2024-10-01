@@ -16,6 +16,11 @@ int main(int args, char *argv[]) {
         return INPUT_ERROR;
     }
 
+    if (strcmp(argv[args - 2], argv[args - 1]) == 0) {
+        printf("Problems with open file\n");
+        return FILE_ERROR;
+    }
+
     if(!(argv[1][0] == '-' || argv[1][0] == '/')) {
         printf("input error\n");
         return INPUT_ERROR;

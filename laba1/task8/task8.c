@@ -12,6 +12,11 @@ int main(int args, char* argv[]) {
         return -1;
     }
 
+    if (strcmp(argv[1], argv[2]) == 0) {
+        printf("Problems with open file\n");
+        return -3;
+    }
+
     FILE* input = fopen(argv[1], "r");
     FILE* output = fopen(argv[2], "w");
 
@@ -83,6 +88,7 @@ int main(int args, char* argv[]) {
                 if (str_to_llint(number, &answer, max_system) != -2) {
                     fprintf(output, "%s %d %lli\n", number, max_system, answer);
                 } else {
+                    printf("the problem with the element\n");
                     free(number);
                     if (input != NULL) {
                         fclose(input);
@@ -110,13 +116,10 @@ long long int str_to_llint(char* str, long long int* number, int system) {
     char* end = NULL;
     *number = strtoll(str, &end, system);
     if (*number == LLONG_MIN || *number == LLONG_MAX) {
-        printf("the problem with the element\n");
         return -2;
     } else if (end == str && *number == 0) {
-        printf("the problem with the element\n");
         return -2;
     } else if (*end != '\0') {
-        printf("the problem with the element\n");
         return -2;
     }
 

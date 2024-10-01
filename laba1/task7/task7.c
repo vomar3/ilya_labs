@@ -24,11 +24,17 @@ int main(int args, char *argv[]) {
         return INPUT_ERROR;
     }
 
+    if (strcmp(argv[2], argv[3]) == 0 || strcmp(argv[2], argv[args - 1]) == 0
+           || strcmp(argv[3], argv[args - 1]) == 0) {
+            printf("Problems with open file\n");
+            return FILE_ERROR;
+    }
+
     FILE *file1 = fopen(argv[2], "r");
     FILE *file2 = fopen(argv[3], "r");
     FILE *output = fopen(argv[args - 1], "w");
 
-    if (file1 == NULL || file2 == NULL || output == NULL) {
+    if (file1 == NULL || file2 == NULL || output == NULL)  {
         printf("Invalid input\n");
         if (file1 != NULL) fclose(file1);
         if (file2 != NULL) fclose(file2);
