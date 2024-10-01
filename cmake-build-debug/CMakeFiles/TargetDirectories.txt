@@ -1,7 +1,0 @@
-C:/Users/lasto/CLionProjects/ilya_laba1/cmake-build-debug/CMakeFiles/ilya_laba1.dir
-C:/Users/lasto/CLionProjects/ilya_laba1/cmake-build-debug/CMakeFiles/ilya3.dir
-C:/Users/lasto/CLionProjects/ilya_laba1/cmake-build-debug/CMakeFiles/ilya4.dir
-C:/Users/lasto/CLionProjects/ilya_laba1/cmake-build-debug/CMakeFiles/ilya10.dir
-C:/Users/lasto/CLionProjects/ilya_laba1/cmake-build-debug/CMakeFiles/ilya8.dir
-C:/Users/lasto/CLionProjects/ilya_laba1/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/lasto/CLionProjects/ilya_laba1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
