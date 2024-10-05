@@ -15,7 +15,7 @@ double integral_d(double x);
 
 double integrate(double epsilon, double (*integrate_function)(double));
 
-double rectangle_method(int n, double epsilon, double (*integrate_function)(double));
+double rectangle_method(int number, double epsilon, double (*integrate_function)(double));
 
 enum ERRORS{
     OK,
@@ -25,7 +25,7 @@ enum ERRORS{
 
 int main(int args, char *argv[]) {
 
-    if (args > 2) {
+    if (args != 2) {
         printf("Invalid input\n");
         return INVALID_INPUT;
     }
@@ -36,7 +36,7 @@ int main(int args, char *argv[]) {
         return PROBLEMS_WITH_EPS;
     }
 
-    if (epsilon <= 0) {
+    if (epsilon <= 0 || epsilon > 1) {
         printf("Problems with epsilon\n");
         return PROBLEMS_WITH_EPS;
     }
