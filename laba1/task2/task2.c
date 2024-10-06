@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <limits.h>
 #include <string.h>
 
 int str_to_double(char *str, double *number);
@@ -24,6 +23,8 @@ double row_ln2(double epsilon);
 
 double row_sqrt2(double epsilon);
 
+double row_lambda(double epsilon);
+
 double e_equation(double epsilon);
 
 double pi_equation(double epsilon);
@@ -32,10 +33,14 @@ double sqrt2_equation(double epsilon);
 
 double ln2_equation(double epsilon);
 
+double lambda_equation(double epsilon);
+
+int is_prime (int number);
+
 enum ERRORS{
     OK,
     ERROR_INPUT,
-
+    PROBLEM_EPS,
 };
 
 int main(int args, char* argv[]) {
@@ -44,6 +49,9 @@ int main(int args, char* argv[]) {
     if (str_to_double(argv[1], &epsilon) == -2 || epsilon <= 0.0 || epsilon >= 1.0) {
         printf("Invalid input\n");
         return ERROR_INPUT;
+    } else if (str_to_double(argv[1], &epsilon) == -3) {
+        printf("It's hard to calculate, enter fewer characters\n");
+        return PROBLEM_EPS;
     }
 
     if (args != 2) {
@@ -55,11 +63,14 @@ int main(int args, char* argv[]) {
     printf("pi:\nlim: %lf, row: %lf, equal: %lf\n", limit_pi(epsilon), row_pi(epsilon), pi_equation(epsilon));
     printf("ln2:\nlim: %lf, row: %lf, equal: %lf\n", limit_ln2(epsilon), row_ln2(epsilon), ln2_equation(epsilon));
     printf("sqrt2:\nlim: %lf, row: %lf, equal: %lf\n", limit_sqrt2(epsilon), row_sqrt2(epsilon), sqrt2_equation(epsilon));
+    printf("lambda:\nlim: %lf, row: %lf, equal: %lf\n", limit_lambda(epsilon), row_lambda(epsilon), lambda_equation(epsilon));
 
     return OK;
 }
 
 int str_to_double(char *str, double *number) {
+    if (strlen(str) > 10) return -3;
+
     char *end;
     *number = strtod(str, &end);
 
@@ -123,6 +134,23 @@ double limit_sqrt2(double epsilon) {
     return current_iteration;
 }
 
+double limit_lambda(double epsilon) {
+    int n = 1;
+    double current_iteration = 1.0, last_iteration, sum = 1.0;
+    do
+    {
+        last_iteration = current_iteration;
+        n *= 2;
+
+        for (int i = 2; i <= n; ++i) {
+            sum += 1.0 / i;
+        }
+        current_iteration = sum  - log(n);
+        sum = 1.0;
+    } while (fabs(last_iteration - current_iteration) >= epsilon);
+    return current_iteration;
+}
+
 double row_e(double epsilon) {
     double sum = 1.0, last_iteration = 1.0;
     int n = 1;
@@ -168,7 +196,7 @@ double row_ln2(double epsilon) {
 }
 
 double row_sqrt2(double epsilon) {
-    double sum = pow(2.0, 0.25), last_iteration = 0.0;
+    double sum = pow(2.0, 0.25), last_iteration;
     int k = 2;
 
     do
@@ -179,6 +207,25 @@ double row_sqrt2(double epsilon) {
     } while (fabs(sum - last_iteration) >= epsilon);
 
     return sum;
+}
+
+double row_lambda(double epsilon) {
+    double current_iteration = 0.5, last_iteration, sqrt_number;
+    int k = 2;
+
+    do
+    {
+        last_iteration = current_iteration;
+        ++k;
+        sqrt_number = sqrt(k);
+        if (fmod(sqrt_number,1.0) == 0) {
+            k++;
+            sqrt_number = (int)pow(k, 1.0/2.0);
+        }
+        current_iteration += 1.0 / pow((int)sqrt_number, 2.0) - 1.0 / k;
+    } while (fabs(last_iteration - current_iteration) >= epsilon);
+
+    return (current_iteration - pow(M_PI, 2) / 6);
 }
 
 double e_equation(double epsilon) {
@@ -227,4 +274,34 @@ double sqrt2_equation(double epsilon) {
         x = x - f / df;
     }
     return x;
+}
+
+double lambda_equation(double epsilon) {
+    double current_iteration = log(2) * 0.5, last_iteration, number = 0.5;
+    int p = 2;
+
+    do {
+        last_iteration = current_iteration;
+        do {
+            ++p;
+        } while (is_prime(p));
+            number *= (p - 1.0) / p;
+            current_iteration = log(p) * number;
+
+    } while (fabs(last_iteration - current_iteration) >= epsilon);
+
+    return (-log(current_iteration));
+}
+
+int is_prime (int number) {
+    if(number < 0) number *= -1;
+
+    if (number == 0 || number == 1 || number == 2) return 0;
+
+    if(number % 2 == 0) return 1;
+
+    for (int i = 3; i <= floor(sqrt(number)); i += 2) {
+        if (number % i == 0) return 1;
+    }
+    return 0;
 }
