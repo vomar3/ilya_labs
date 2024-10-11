@@ -103,11 +103,11 @@ int main(int args, char* argv[]) {
                 return INVALID_INPUT;
             }
 
-            if (str_to_Uint(argv[3], &number_for_random, 10) == INVALID_INPUT) {
+            if (str_to_Uint(argv[2], &number_for_random, 10) == INVALID_INPUT) {
                 printf("Invalid input\n");
                 free_all(line_r, line_u, line_n, line_c);
                 return INVALID_INPUT;
-            } else if (str_to_Uint(argv[3], &number_for_random, 10) == OVERFLOW) {
+            } else if (str_to_Uint(argv[2], &number_for_random, 10) == OVERFLOW) {
                 printf("Number is overflow\n");
                 free_all(line_r, line_u, line_n, line_c);
                 return OVERFLOW;
@@ -126,24 +126,13 @@ int main(int args, char* argv[]) {
                 random = 3 + rand() % how_random_str;
 
                 if (strings[random - 3] != 1) {
-                    if (random == 3) {
-                        if (concatenation(argv[random - 1], line_c, &my_len_for_c) != OK) {
-                            printf("Memory error\n");
-                            free_all(line_r, line_u, line_n, line_c);
-                            return MEMORY_ERROR;
-                        } else {
-                            ++count;
-                            strings[random - 3] = 1;
-                        }
+                    if (concatenation(argv[random], line_c, &my_len_for_c) != OK) {
+                        printf("Memory error\n");
+                        free_all(line_r, line_u, line_n, line_c);
+                        return MEMORY_ERROR;
                     } else {
-                        if (concatenation(argv[random], line_c, &my_len_for_c) != OK) {
-                            printf("Memory error\n");
-                            free_all(line_r, line_u, line_n, line_c);
-                            return MEMORY_ERROR;
-                        } else {
-                            ++count;
-                            strings[random - 3] = 1;
-                        }
+                        ++count;
+                        strings[random - 3] = 1;
                     }
                 }
             }

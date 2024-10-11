@@ -25,4 +25,6 @@ add_executable(ilya5 laba1/task5/task5.c)
 
 add_executable(ilya2 laba1/task2/task2.c)
 
+add_executable(ilya1.2 laba2/task1/task1.c)
+
 target_link_libraries(ilya_laba1 m)
