@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <limits.h>
 
-typedef enum ERRORS{
+typedef enum ERRORS {
     OK,
     INVALID_INPUT,
     MEMORY_ERROR,
     OVERFLOW,
-}error;
+} error;
 
 int my_strlen(const char *str);
 
@@ -21,9 +21,9 @@ void str_numbers_symbols_others(const char *str, char *answer);
 
 void free_all(char *line_r, char *line_u, char *line_n, char *line_c);
 
-error concatenation(const char *str, char *line_c, int *my_len_for_c);
+error concatenation(const char *str, char *line_c, int *my_len_for_c, size_t *buf);
 
-int main(int args, char* argv[]) {
+int main(int args, char *argv[]) {
 
     if (args < 3) {
         printf("Invalid input\n");
@@ -36,13 +36,14 @@ int main(int args, char* argv[]) {
     }
 
     int strings[args - 3];
+    size_t buf = BUFSIZ;
     int how_random_str;
     int my_len_for_c = 0;
     unsigned int number_for_random;
-    char *line_r = (char*) malloc((my_strlen(argv[2]) + 1) * sizeof(char));
-    char *line_u = (char*) malloc((my_strlen(argv[2]) + 1) * sizeof(char));
-    char *line_n = (char*) malloc((my_strlen(argv[2]) + 1) * sizeof(char));
-    char *line_c = (char*) malloc(1 * sizeof(char));
+    char *line_r = (char *) malloc((my_strlen(argv[2]) + 1) * sizeof(char));
+    char *line_u = (char *) malloc((my_strlen(argv[2]) + 1) * sizeof(char));
+    char *line_n = (char *) malloc((my_strlen(argv[2]) + 1) * sizeof(char));
+    char *line_c = (char *) malloc(buf * sizeof(char));
     if (line_r == NULL || line_u == NULL || line_n == NULL || line_c == NULL) {
         printf("Error with malloc\n");
         free_all(line_r, line_u, line_n, line_c);
@@ -126,7 +127,7 @@ int main(int args, char* argv[]) {
                 random = 3 + rand() % how_random_str;
 
                 if (strings[random - 3] != 1) {
-                    if (concatenation(argv[random], line_c, &my_len_for_c) != OK) {
+                    if (concatenation(argv[random], line_c, &my_len_for_c, &buf) != OK) {
                         printf("Memory error\n");
                         free_all(line_r, line_u, line_n, line_c);
                         return MEMORY_ERROR;
@@ -179,7 +180,7 @@ int my_strlen(const char *str) {
     //Моя запись
 
     char const *end = str;
-    while(*end++);
+    while (*end++);
     return end - str - 1;
     // Более компактная запись с лаб
 }
@@ -227,7 +228,7 @@ void str_numbers_symbols_others(const char *str, char *answer) {
 
     for (int i = 0; i < len; ++i) {
         if ((str[i] >= 'a' && str[i] <= 'z') ||
-        (str[i] >= 'A' && str[i] <= 'Z')) {
+            (str[i] >= 'A' && str[i] <= 'Z')) {
             answer[count] = str[i];
             ++count;
         }
@@ -235,8 +236,8 @@ void str_numbers_symbols_others(const char *str, char *answer) {
 
     for (int i = 0; i < len; ++i) {
         if (!((str[i] >= 'a' && str[i] <= 'z') ||
-        (str[i] >= 'A' && str[i] <= 'Z') ||
-        (str[i] >= '0' && str[i] <= '9'))) {
+              (str[i] >= 'A' && str[i] <= 'Z') ||
+              (str[i] >= '0' && str[i] <= '9'))) {
             answer[count] = str[i];
             ++count;
         }
@@ -246,22 +247,33 @@ void str_numbers_symbols_others(const char *str, char *answer) {
 }
 
 void free_all(char *line_r, char *line_u, char *line_n, char *line_c) {
-    free(line_n);
-    line_n = NULL;
-    free(line_u);
-    line_u = NULL;
-    free(line_r);
-    line_r = NULL;
-    free(line_c);
-    line_c = NULL;
+    if (line_n != NULL) {
+        free(line_n);
+        line_n = NULL;
+    }
+    if (line_u != NULL) {
+        free(line_u);
+        line_u = NULL;
+    }
+    if (line_r != NULL) {
+        free(line_r);
+        line_r = NULL;
+    }
+    if (line_c != NULL) {
+        free(line_c);
+        line_c = NULL;
+    }
 }
 
-error concatenation(const char *str, char *line_c, int *my_len_for_c) {
-    if (line_c == NULL) return MEMORY_ERROR;
-    char *new = (char*) realloc(line_c, *my_len_for_c + my_strlen(str) + 1);
-    if (new == NULL) return MEMORY_ERROR;
+error concatenation(const char *str, char *line_c, int *my_len_for_c, size_t *buf) {
+    if (line_c == NULL) { return MEMORY_ERROR; }
 
-    line_c = new;
+    if (*buf < *my_len_for_c + my_strlen(str) + 1) {
+        *buf *= 2;
+        char *new = (char *) realloc(line_c, *buf);
+        if (new == NULL) { return MEMORY_ERROR; }
+        line_c = new;
+    }
 
     for (int i = 0; i < my_strlen(str); ++i) {
         line_c[*my_len_for_c] = str[i];
