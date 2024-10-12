@@ -92,7 +92,7 @@ double limit_e(double epsilon) {
     do
     {
         last_iteration = current_iteration;
-        n *= 2;
+        n += 1;
         current_iteration = pow((1.0 + 1.0 / n) , n);
     } while (fabs(last_iteration - current_iteration) >= epsilon);
     return current_iteration;
@@ -145,7 +145,7 @@ double limit_lambda(double epsilon) {
         for (int i = 2; i <= n; ++i) {
             sum += 1.0 / i;
         }
-        current_iteration = sum  - log(n);
+        current_iteration = sum - log(n);
         sum = 1.0;
     } while (fabs(last_iteration - current_iteration) >= epsilon);
     return current_iteration;
@@ -210,7 +210,7 @@ double row_sqrt2(double epsilon) {
 }
 
 double row_lambda(double epsilon) {
-    double current_iteration = 0.5, last_iteration, sqrt_number;
+    double current_iteration = 0.5, last_iteration = 0, sqrt_number;
     int k = 2;
 
     do
