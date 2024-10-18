@@ -23,6 +23,8 @@ void free_all(char *line_r, char *line_u, char *line_n, char *line_c);
 
 error concatenation(const char *str, char *line_c, int *my_len_for_c, size_t *buf);
 
+error function(int num, char *argv[], size_t buf, char *line_c);
+
 int main(int args, char *argv[]) {
 
     if (args < 3) {
@@ -34,12 +36,9 @@ int main(int args, char *argv[]) {
         printf("Invalid input\n");
         return INVALID_INPUT;
     }
-
-    int strings[args - 3];
     size_t buf = BUFSIZ;
-    int how_random_str;
-    int my_len_for_c = 0;
     unsigned int number_for_random;
+    int num = args - 3;
     char *line_r = (char *) malloc((my_strlen(argv[2]) + 1) * sizeof(char));
     char *line_u = (char *) malloc((my_strlen(argv[2]) + 1) * sizeof(char));
     char *line_n = (char *) malloc((my_strlen(argv[2]) + 1) * sizeof(char));
@@ -114,31 +113,14 @@ int main(int args, char *argv[]) {
                 return OVERFLOW;
             }
 
-            for (int i = 0; i < args - 3; ++i) {
-                strings[i] = 0;
-            }
-
-            how_random_str = args - 3;
             srand(number_for_random);
-            int random;
-            int count = 0;
-
-            while (count != args - 3) {
-                random = 3 + rand() % how_random_str;
-
-                if (strings[random - 3] != 1) {
-                    if (concatenation(argv[random], line_c, &my_len_for_c, &buf) != OK) {
-                        printf("Memory error\n");
-                        free_all(line_r, line_u, line_n, line_c);
-                        return MEMORY_ERROR;
-                    } else {
-                        ++count;
-                        strings[random - 3] = 1;
-                    }
-                }
+            if (function(num, argv, buf, line_c) == OK) {
+                printf("New line: %s\n", line_c);
+            } else {
+                printf("Memory error\n");
+                free_all(line_r, line_u, line_n, line_c);
+                return MEMORY_ERROR;
             }
-
-            printf("New line: %s\n", line_c);
 
             break;
 
@@ -281,6 +263,34 @@ error concatenation(const char *str, char *line_c, int *my_len_for_c, size_t *bu
     }
 
     line_c[*my_len_for_c] = '\0';
+
+    return OK;
+}
+
+error function(int num, char *argv[], size_t buf, char *line_c) {
+    int how_random_str;
+    int my_len_for_c = 0;
+    int strings[num];
+    for (int i = 0; i < num; ++i) {
+        strings[i] = 0;
+    }
+
+    how_random_str = num;
+    int random;
+    int count = 0;
+
+    while (count != num) {
+        random = 3 + rand() % how_random_str;
+
+        if (strings[random - 3] != 1) {
+            if (concatenation(argv[random], line_c, &my_len_for_c, &buf) != OK) {
+                return MEMORY_ERROR;
+            } else {
+                ++count;
+                strings[random - 3] = 1;
+            }
+        }
+    }
 
     return OK;
 }
