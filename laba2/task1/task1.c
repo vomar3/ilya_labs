@@ -250,14 +250,16 @@ void free_all(char *line_r, char *line_u, char *line_n, char *line_c) {
 error concatenation(const char *str, char *line_c, int *my_len_for_c, size_t *buf) {
     if (line_c == NULL) { return MEMORY_ERROR; }
 
-    if (*buf < *my_len_for_c + my_strlen(str) + 1) {
+    int size = my_strlen(str);
+
+    if (*buf < *my_len_for_c + size + 1) {
         *buf *= 2;
         char *new = (char *) realloc(line_c, *buf);
         if (new == NULL) { return MEMORY_ERROR; }
         line_c = new;
     }
 
-    for (int i = 0; i < my_strlen(str); ++i) {
+    for (int i = 0; i < size; ++i) {
         line_c[*my_len_for_c] = str[i];
         (*my_len_for_c)++;
     }
