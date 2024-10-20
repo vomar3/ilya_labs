@@ -26,7 +26,7 @@ int main() {
     unsigned long long int answers[100];
     int len_ans = 0;
 
-    switch (fraction(answers, &len_ans, 11, 2, 0.25, 0.11)) {
+    switch (fraction(answers, &len_ans, 22, 6, 0.05, 0.33, 0.1, 0.25, 0.0000003, 0.2)) {
         case OK:
 
             for (int i = 0; i < len_ans; ++i) {
@@ -69,10 +69,10 @@ error fraction(unsigned long long int *answers, int *len_ans, unsigned int base,
         if (make_denominator(base, &denominator, &numerator, number) != OK) return NUMBER_OVERFLOW;
 
         if (final_representation(base, denominator) == 1) {
-            answers[count] = denominator;
+            answers[i] = denominator;
             *len_ans = *len_ans + 1;
         } else {
-            answers[count] = 0;
+            answers[i] = 0;
             *len_ans = *len_ans + 1;
         }
     }
@@ -122,12 +122,14 @@ unsigned long long int Evklid(unsigned long long int den, unsigned long long int
 }
 
 int final_representation(unsigned int base, unsigned long long int den) {
-    for (int i = 2; i <= 5; ++i) {
+    for (int i = 2; i <= base; ++i) {
         if (i == 4) continue;
 
         while (base % i == 0 && den % i == 0) {
-            base /= i;
-            den /= i;
+            while (base % i == 0) base /= i;
+            while (den % i == 0) den /= i;
+
+            if (den == 1) return 0;
         }
     }
 
