@@ -2,8 +2,9 @@
 #include <stdarg.h>
 #include <math.h>
 #include <limits.h>
+#include <float.h>
 
-#define EPS 1e-7
+#define EPS DBL_EPSILON
 
 typedef enum ERRORS{
     OK,
@@ -26,7 +27,7 @@ int main() {
     unsigned long long int answers[100];
     int len_ans = 0;
 
-    switch (fraction(answers, &len_ans, 22, 6, 0.05, 0.33, 0.1, 0.25, 0.0000003, 0.2)) {
+    switch (fraction(answers, &len_ans, 8, 6, 0.125, 0.5, 0.0001, 0.25, 0.625, 0.0005)) {
         case OK:
 
             for (int i = 0; i < len_ans; ++i) {
