@@ -27,7 +27,7 @@ int main() {
     unsigned long long int answers[100];
     int len_ans = 0;
 
-    switch (fraction(answers, &len_ans, 8, 6, 0.125, 0.5, 0.0001, 0.25, 0.625, 0.0005)) {
+    switch (fraction(answers, &len_ans, 22, 6, 0.05, 0.33, 0.1, 0.25, 0.0000003, 0.2)) {
         case OK:
 
             for (int i = 0; i < len_ans; ++i) {
@@ -124,7 +124,7 @@ unsigned long long int Evklid(unsigned long long int den, unsigned long long int
 
 int final_representation(unsigned int base, unsigned long long int den) {
     for (int i = 2; i <= base; ++i) {
-        if (i == 4) continue;
+        if (i % 2 == 0 && i != 2) continue;
 
         while (base % i == 0 && den % i == 0) {
             while (base % i == 0) base /= i;
