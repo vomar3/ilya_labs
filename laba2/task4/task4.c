@@ -8,6 +8,7 @@ typedef enum ERRORS{
     OK,
     INVALID_INPUT,
     NUMBER_OVERFLOW,
+    UNKNOWN_ERROR,
 } error;
 
 typedef struct Point{
@@ -59,6 +60,9 @@ int main() {
         case NUMBER_OVERFLOW:
             printf("Number overflow\n");
             return NUMBER_OVERFLOW;
+        default:
+            printf("unknown error\n");
+            return UNKNOWN_ERROR;
     }
 
     double answer;
@@ -73,6 +77,9 @@ int main() {
         case INVALID_INPUT:
             printf("Invalid input\n");
             return INVALID_INPUT;
+        default:
+            printf("unknown error\n");
+            return UNKNOWN_ERROR;
     }
 
     int count = 4;
@@ -94,6 +101,9 @@ int main() {
         case INVALID_INPUT:
             printf("Invalid input\n");
             return INVALID_INPUT;
+        default:
+            printf("unknown error\n");
+            return UNKNOWN_ERROR;
     }
     return OK;
 }
