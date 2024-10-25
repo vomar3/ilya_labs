@@ -19,7 +19,7 @@ error sum_all_numbers(int *count_answers, int *answer, unsigned int system, unsi
 
 int main() {
 
-    unsigned int system = 10, count = 2;
+    unsigned int system = 10, count = 2, count_for_answer = 0;
     int count_answers = 0;
     int *answer = (int *) malloc((BUFSIZ) * sizeof(int));
     if (answer == NULL) {
@@ -33,10 +33,13 @@ int main() {
             , "5211113423423423432423423423423423419999999999999999999999999991111111111111111111")){
         case OK:
             for (int i = count_answers - 1; i >= 0; --i) {
+                if (count_for_answer == 0 && answer[i] == 0) continue;
                 if (answer[i] <= 9) {
                     printf("%d", answer[i]);
+                    ++count_for_answer;
                 } else {
                     printf("%c", (char)(answer[i] + 'A' - 10));
+                    ++count_for_answer;
                 }
             }
             break;
