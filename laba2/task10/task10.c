@@ -49,6 +49,7 @@ int main() {
             }
     }
 
+    free(answers);
     return OK;
 }
 
