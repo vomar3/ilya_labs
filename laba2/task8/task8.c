@@ -108,6 +108,8 @@ error sum_two_nums(int *count_answers, unsigned int system, int *answer, int *bu
         new_line = realloc_str;
     }
 
+    if (new_line[0] == '-') return INVALID_INPUT;
+
     int flag = 0;
     for (int i = 0; i < len; ++i) {
         if ((int)(new_line[i] - '0') < 10) {
