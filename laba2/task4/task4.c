@@ -31,9 +31,9 @@ error check_sum_strings(unsigned long int *answer_array, int count, char *origin
 
 error Kaprekara_numbers(unsigned long int *answer_array, int base, int count, ...);
 
-error Bulge(int *true, int count, ...);
+int Bulge(int count, ...);
 
-double vector_product(Point p1, Point p2, Point p3);
+int vector_product(Point p1, Point p2, Point p3);
 
 int my_strlen(const char *str);
 
@@ -46,23 +46,10 @@ int main() {
     Point p3 = {0, 1};
     Point p4 = {0, 1};
     printf("Bulge: \n");
-    switch (Bulge(&true, counts_of_points, p1, p2, p3, p4)) {
-        case OK:
-            if (true == 0) {
-                printf("The polygon is convex\n");
-            } else {
-                printf("The polygon is NOT convex\n");
-            }
-            break;
-        case INVALID_INPUT:
-            printf("Invalid input\n");
-            return INVALID_INPUT;
-        case NUMBER_OVERFLOW:
-            printf("Number overflow\n");
-            return NUMBER_OVERFLOW;
-        default:
-            printf("unknown error\n");
-            return UNKNOWN_ERROR;
+    if (Bulge(counts_of_points, p1, p2, p3, p4) == 0) {
+        printf("The polygon is convex\n");
+    } else {
+        printf("The polygon is NOT convex\n");
     }
 
     double answer;
@@ -265,12 +252,14 @@ error Kaprekara_numbers(unsigned long int *answer_array, int base, int count, ..
     return OK;
 }
 
-error Bulge(int *true, int count, ...) {
-    if (count < 3) return INVALID_INPUT;
+int Bulge(int count, ...) {
+    if (count < 3) return 1;
 
     va_list args;
     double answer;
     va_start(args, count);
+
+    Point point1, point2;
 
     Point p1 = va_arg(args, Point);
     Point p2 = va_arg(args, Point);
@@ -278,24 +267,34 @@ error Bulge(int *true, int count, ...) {
 
     answer = vector_product(p1, p2, p3);
 
+    point1 = p1;
+    point2 = p2;
+
     for (int i = 0; i < count - 3; ++i) {
-        p1 = p2;
-        p2 = p3;
+        point1 = point2;
+        point2 = p3;
         p3 = va_arg(args, Point);
 
-        answer *= vector_product(p1, p2, p3);
-        if (answer < 0) {
-            *true = 1;
+        if (vector_product(point1, point2, p3) != answer) {
             va_end(args);
-            return OK;
+            return 1;
         }
     }
 
-    *true = 0;
+    if (vector_product(point2, p3, point1) != answer
+    || vector_product(p3, point1, p1) != answer) {
+        va_end(args);
+        return 1;
+    }
+
     va_end(args);
-    return OK;
+    return 0;
 }
 
-double vector_product(Point p1, Point p2, Point p3) {
-    return ((p2.x - p1.x) * (p3.y - p2.y)) - ((p2.y - p1.y) * (p3.x - p2.x));
+int vector_product(Point p1, Point p2, Point p3) {
+    if ((((p2.x - p1.x) * (p3.y - p2.y)) - ((p2.y - p1.y) * (p3.x - p2.x))) > 0) {
+        return 1;
+    } else {
+        return -1;
+    }
 }
