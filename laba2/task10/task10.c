@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <math.h>
 
 typedef enum ERRORS{
     OK,
@@ -23,9 +24,9 @@ error calculating_polynomial_coefs(double *array_answers, double eps, int degree
 
 int main() {
 
-    int degree = 1;
+    int degree = 4;
     double epsilon = 1e-6;
-    double a = 5;
+    double a = 3.0;
     double *answers = (double *) malloc((degree + 1) * sizeof(double));
     if (answers == NULL) {
         printf("Memory error\n");
@@ -33,7 +34,7 @@ int main() {
         return MEMORY_ERROR;
     }
 
-    switch (calculating_polynomial_coefs(answers, epsilon, degree, a, -25.0, 5.0)) {
+    switch (calculating_polynomial_coefs(answers, epsilon, degree, a, -2.0, 1.0, -3.0, 0.0, 1.0)) {
         case MEMORY_ERROR:
             printf("Memory error\n");
             free(answers);
@@ -47,6 +48,24 @@ int main() {
             for (int i = 0; i <= degree; ++i) {
                 printf("g%d = %lf\n", i, answers[i]);
             }
+    }
+
+    printf("\n");
+    for (int x = 0; x < degree + 1; x++)
+    {
+        double f_x = -2.0 + 1.0 * x - 3.0 * x * x + 0.0 * x * x * x + 1.0 * x * x * x * x;
+        printf("f(%d) = %lf\n", x, f_x);
+    }
+    printf("\n");
+
+    for (int x = 0; x < degree + 1; x++)
+    {
+        double g_x = 0.0;
+        for (int i = 0; i < degree + 1; i++)
+        {
+            g_x += answers[i] * pow(x - 3.0, i);
+        }
+        printf("g(%d) = %lf\n", x, g_x);
     }
 
     free(answers);
@@ -93,6 +112,6 @@ double calc_df(double *coefs, int degree, double point) {
     for (int i = 0; i < degree; ++i) {
         coefs[i] = coefs[i + 1] * (i + 1);
     }
-    coefs[degree] = '\0';
+    //coefs[degree] = '\0';
     return calc_equation(coefs, degree - 1, point);
 }
