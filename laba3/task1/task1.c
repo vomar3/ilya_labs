@@ -15,9 +15,9 @@ error check_overflow_int(int num);
 
 int main() {
 
-    char answer[128];
+    char answer[65];
     int sign = 0;
-    switch (num_to_new_base(52, 2, answer, &sign)) {
+    switch (num_to_new_base(255, 1, answer, &sign)) {
         case INVALID_INPUT:
             printf("Invalid input\n");
             return INVALID_INPUT;
@@ -36,8 +36,6 @@ int main() {
 error num_to_new_base(int num, int r, char *answer, int *sign) {
     if (r < 1 || r > 5) return INVALID_INPUT;
     char base[] = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
-
-    if (check_overflow_int(num) != OK) return NUMBER_OVERFLOW;
 
     if (num < 0) {
         num = plus(~num, 1);
@@ -75,12 +73,4 @@ int plus(int a, int b) {
     }
 
     return a;
-}
-
-error check_overflow_int(int num) {
-    if (num > INT_MAX || num < INT_MIN) {
-        return NUMBER_OVERFLOW;
-    } else {
-        return OK;
-    }
 }
