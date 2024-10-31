@@ -47,4 +47,6 @@ add_executable(ilya3.3 laba3/task3/task3.c)
 
 add_executable(ilya3.10 laba3/task10/task10.c)
 
+add_executable(ilya3.5 laba3/task5/task5.c)
+
 target_link_libraries(ilya_laba1 m)
