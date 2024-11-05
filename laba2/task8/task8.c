@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-typedef enum ERRORS{
+typedef enum ERRORS {
     OK,
     INVALID_INPUT,
     MEMORY_ERROR,
@@ -13,32 +13,31 @@ size_t my_strlen(const char *str);
 
 void reverse(char *str);
 
-error sum_two_nums(int *count_answers, unsigned int system, int *answer, int *buf, char *new_line);
+error sum_two_nums(int *count_answers, unsigned int system, char *answer, int *buf, char *new_line);
 
-error sum_all_numbers(int *count_answers, int *answer, unsigned int system, unsigned int count, ...);
+error sum_all_numbers(int *count_answers, char *answer, unsigned int system, unsigned int count, ...);
 
 int main() {
-
-    unsigned int system = 10, count = 2, count_for_answer = 0;
+    unsigned int system = 36, count = 4, count_for_answer = 0;
     int count_answers = 0;
-    int *answer = (int *) malloc((BUFSIZ) * sizeof(int));
+    char *answer = (char *) malloc(BUFSIZ * sizeof(char));
     if (answer == NULL) {
         printf("Memory error\n");
         return MEMORY_ERROR;
     }
-    memset(answer, 0, BUFSIZ);
-    answer[0] = '\0';
+    memset(answer, '\0', BUFSIZ);
 
-    switch (sum_all_numbers(&count_answers, answer, system, count, "999999999999999999999992131111111111143242342342342343242341111111111111111111114324324234324324324435546546111111111111143"
-            , "5211113423423423432423423423423423419999999999999999999999999991111111111111111111")){
+    switch (sum_all_numbers(&count_answers, answer, system, count,
+                            "MMMMMMMMMMMMMMMMMMMMMM",
+                            "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ", "000000000", "1")) {
         case OK:
             for (int i = count_answers - 1; i >= 0; --i) {
-                if (count_for_answer == 0 && answer[i] == 0) continue;
-                if (answer[i] <= 9) {
-                    printf("%d", answer[i]);
+                if (count_for_answer == 0 && answer[i] == '0') continue;
+                if (answer[i] <= '9') {
                     ++count_for_answer;
+                    printf("%c", answer[i]);
                 } else {
-                    printf("%c", (char)(answer[i] + 'A' - 10));
+                    printf("%c", (answer[i] - '0' + 'A' - 10));
                     ++count_for_answer;
                 }
             }
@@ -63,7 +62,7 @@ size_t my_strlen(const char *str) {
     return end - str - 1;
 }
 
-error sum_all_numbers(int *count_answers, int *answer, unsigned int system, unsigned int count, ...) {
+error sum_all_numbers(int *count_answers, char *answer, unsigned int system, unsigned int count, ...) {
     if (system < 2 || system > 36 || count < 1) return INVALID_INPUT;
 
     va_list args;
@@ -75,7 +74,7 @@ error sum_all_numbers(int *count_answers, int *answer, unsigned int system, unsi
         strcpy(number_line, va_arg(args, char *));
         reverse(number_line);
 
-        if (sum_two_nums(count_answers, (unsigned int) system, answer, &buf, number_line) != OK) {
+        if (sum_two_nums(count_answers, system, answer, &buf, number_line) != OK) {
             va_end(args);
             return INVALID_INPUT;
         }
@@ -90,15 +89,14 @@ void reverse(char *str) {
     size_t len = strlen(str);
 
     char symbol;
-    for (int i = 0; i < len / 2; i++)
-    {
+    for (int i = 0; i < len / 2; i++) {
         symbol = str[i];
         str[i] = str[len - i - 1];
         str[len - i - 1] = symbol;
     }
 }
 
-error sum_two_nums(int *count_answers, unsigned int system, int *answer, int *buf, char *new_line) {
+error sum_two_nums(int *count_answers, unsigned int system, char *answer, int *buf, char *new_line) {
     size_t len = my_strlen(new_line);
     if (*count_answers < len) *count_answers = len;
 
@@ -115,44 +113,47 @@ error sum_two_nums(int *count_answers, unsigned int system, int *answer, int *bu
 
     int flag = 0;
     for (int i = 0; i < len; ++i) {
-        if ((int)(new_line[i] - '0') < 10) {
-
-            int number = (int)(new_line[i] - '0');
-
-            if (number >= system) return INVALID_INPUT;
-
-            if (answer[i] + number + flag >= system) {
-                answer[i] = answer[i] + number + flag - system;
-                flag = 1;
-            } else {
-                answer[i] = answer[i] + number + flag;
-                flag = 0;
-            }
+        int number;
+        if (new_line[i] >= '0' && new_line[i] <= '9') {
+            number = new_line[i] - '0';
         } else {
-            int number = (int)(new_line[i] - 'A' + 10);
+            number = new_line[i] - 'A' + 10;
+        }
 
-            if (number >= system) return INVALID_INPUT;
+        if (number >= system) return INVALID_INPUT;
 
-            if (answer[i] + number + flag >= system) {
-                answer[i] = answer[i] + number + flag - system;
-                flag = 1;
-            } else {
-                answer[i] = answer[i] + number + flag;
-                flag = 0;
-            }
+        int current;
+        if (answer[i] != '\0') {
+            current = answer[i] - '0';
+        } else {
+            current = 0;
+        }
+        int sum = current + number + flag;
+
+        if (sum >= system) {
+            answer[i] = (sum - system) + '0';
+            flag = 1;
+        } else {
+            answer[i] = sum + '0';
+            flag = 0;
         }
     }
 
-    int count = len;
+    int count = len, current;
     while (flag == 1) {
-        if (answer[count] == system - 1) {
-            answer[count] = 0;
+        if (answer[count] != '\0') {
+            current = answer[count] - '0';
+        } else {
+            current = 0;
+        }
+        if (current == system - 1) {
+            answer[count] = '0';
             ++count;
             if (*count_answers < count + 1) {
                 *count_answers = count + 1;
             }
         } else {
-            answer[count] += 1;
+            answer[count] = current + 1 + '0';
             flag = 0;
             if (*count_answers < count + 1) {
                 *count_answers = count + 1;
