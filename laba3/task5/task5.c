@@ -243,7 +243,11 @@ int main(int argc, char *argv[]) {
             default:
                 printf("Incorrect input, try again\n");
                 print_menu();
-                scanf("%hd", &user_answer);
+                if (scanf("%hd", &user_answer) != 1) {
+                    printf("Why don't you respect me and my menu?\n");
+                    free_all(student, count);
+                    return INVALID_INPUT;
+                }
                 break;
         }
     }
@@ -459,9 +463,9 @@ error search_by_NSG(const Students *student, int size, unsigned int id, char nsg
 
 void free_all(Students *student, int size) {
     int i;
-    for (i = 0; i < size; ++i) {
-        free(student[size].marks);
-        student[size].marks = NULL;
+    for (i = 0; i <= size; ++i) {
+        free(student[i].marks);
+        student[i].marks = NULL;
     }
     free(student);
     student = NULL;
