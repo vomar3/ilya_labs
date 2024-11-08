@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     short user_answer;
     char input_path[PATH_MAX], output_path[PATH_MAX], scanf_info[BUFSIZ];
     FILE *input = NULL, *output = NULL;
-    double average_students_marks;
+    double average_students_marks = 0;
 
     if (argc != 3 || argv[0] == NULL || argv[1] == NULL || argv[2] == NULL) return INVALID_INPUT;
 
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
             case 3:
                 printf("Enter the name (not longer 512): \n");
                 scanf("%s", scanf_info);
-                printf("Search by group.. \n");
+                printf("Search by name.. \n");
                 if (search_by_NSG(student, count, search_id, 'n', scanf_info) != OK) {
                     printf("No students with this name\n");
                 }
@@ -310,7 +310,9 @@ int compare_groups(const void *a, const void *b) {
 
 error read_file_write_struct(FILE *input, Students **student, int *count, int *size, double *average) {
 
-    int i, sum = 0, num, check_how_read;
+    int i, sum = 0, num, num2, num3, num4, num5, check_how_read, check_id;
+    char check_1, check_2, check_3, check_4, check_5;
+    char check_name[BUFSIZ], check_surname[BUFSIZ], check_group[BUFSIZ];
 
     if (input == NULL)
         return PROBLEMS_WITH_FILE;
@@ -320,68 +322,78 @@ error read_file_write_struct(FILE *input, Students **student, int *count, int *s
 
     while (!feof(input)) {
 
-        if (*count == *size) {
-            *size *= 2;
-            Students *memory = (Students *) realloc(*student, *size * sizeof(Students));
-            if (memory == NULL) {
-                free_all(*student, *count);
-                fclose(input);
-                return MEMORY_ERROR;
+        if ((check_how_read = fscanf(input, "%d %49s %49s %49s %c %c %c %c %c\n",
+                                         &check_id, check_name, check_surname, check_group, &check_1, &check_2,
+                                         &check_3, &check_4, &check_5)) == 9) {
+
+            if (*count == *size) {
+                *size *= 2;
+                Students *memory = (Students *) realloc(*student, *size * sizeof(Students));
+                if (memory == NULL) {
+                    free_all(*student, *count);
+                    fclose(input);
+                    return MEMORY_ERROR;
+                }
+                *student = memory;
             }
-            *student = memory;
-        }
 
-        (*student)[*count].marks = (unsigned char *) malloc(5 * sizeof(unsigned char));
-        if ((*student)[*count].marks == NULL) {
-            free_all(*student, *count);
-            fclose(input);
-            return MEMORY_ERROR;
-        }
-
-        if ((check_how_read = fscanf(input, "%d %49s %49s %49s %c %c %c %c %c",
-                                         &(*student)[*count].id, (*student)[*count].name, (*student)[*count].surname,
-                                         (*student)[*count].group, &(*student)[*count].marks[0],
-                                         &(*student)[*count].marks[1],
-                                         &(*student)[*count].marks[2], &(*student)[*count].marks[3],
-                                         &(*student)[*count].marks[4])) == 9) {
-
-            size_t len = my_strlen((*student)[*count].surname);
-            if ((*student)[*count].id <= 0 || len == 0 || my_strlen((*student)[*count].name) == 0
-            || my_strlen((*student)[*count].group) == 0) {
+            size_t len = my_strlen(check_surname);
+            if (check_id <= 0 || len == 0 || my_strlen(check_name) == 0
+            || my_strlen(check_group) == 0) {
                 free_all(*student, *count);
                 fclose(input);
                 return INVALID_INPUT;
             }
 
             for (i = 0; i < len; ++i) {
-                if (!isalpha((*student)[*count].surname[i])) {
+                if (!isalpha(check_surname[i])) {
                     free_all(*student, *count);
                     fclose(input);
                     return INVALID_INPUT;
                 }
             }
 
-            len = my_strlen((*student)[*count].name);
+            len = my_strlen(check_name);
             for (i = 0; i < len; ++i) {
-                if (!isalpha((*student)[*count].name[i])) {
+                if (!isalpha(check_name[i])) {
                     free_all(*student, *count);
                     fclose(input);
                     return INVALID_INPUT;
                 }
             }
 
-            for (i = 0; i < 5; ++i) {
-                num = ((*student)[*count].marks[i] - '0');
-                if (num > 5 || num < 2) {
-                    free_all(*student, *count);
-                    fclose(input);
-                    return INVALID_INPUT;
-                }
-                sum += num;
+            num = (check_1 - '0'), num2 = (check_2 - '0'), num3 = (check_3 - '0'), num4 = (check_4 - '0'),
+                    num5 = (check_5 - '0');
+            if (num > 5 || num < 2 || num2 > 5 || num2 < 2 || num3 > 5 || num3 < 2 || num4 > 5 || num4 < 2 ||
+            num5 > 5 || num5 < 2) {
+                free_all(*student, *count);
+                fclose(input);
+                return INVALID_INPUT;
             }
+
+            sum = sum + num + num2 + num3 + num4 + num5;
             *average += sum;
             (*student)[*count].average_marks = (double) (sum) / 5;
             sum = 0;
+
+            (*student)[*count].id = check_id;
+
+            strcpy((*student)[*count].surname, check_surname);
+            strcpy((*student)[*count].name, check_name);
+            strcpy((*student)[*count].group, check_group);
+
+            (*student)[*count].marks = (unsigned char *) malloc(5 * sizeof(unsigned char));
+            if ((*student)[*count].marks == NULL) {
+                free_all(*student, *count);
+                fclose(input);
+                return MEMORY_ERROR;
+            }
+
+            (*student)[*count].marks[0] = check_1;
+            (*student)[*count].marks[1] = check_2;
+            (*student)[*count].marks[2] = check_3;
+            (*student)[*count].marks[3] = check_4;
+            (*student)[*count].marks[4] = check_5;
 
             (*count)++;
         } else if (check_how_read > 0 && check_how_read < 9){
@@ -471,7 +483,7 @@ error search_by_NSG(const Students *student, int size, unsigned int id, char nsg
 
 void free_all(Students *student, int size) {
     int i;
-    for (i = 0; i <= size; ++i) {
+    for (i = 0; i < size; ++i) {
         free(student[i].marks);
         student[i].marks = NULL;
     }
