@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
                 printf("Enter the id\n");
                 scanf("%u", &search_id);
                 printf("Search by id.. \n");
-                if (search_by_id(student, count, search_id) == NOT_FOUND) {
+                if (search_by_id(student, count, search_id) != OK) {
                     printf("No students with this id\n");
                 }
                 print_menu();
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
                 printf("Enter the surname (not longer 512): \n");
                 scanf("%s", scanf_info);
                 printf("Search by surname.. \n");
-                if (search_by_NSG(student, count, search_id, 's', scanf_info) == NOT_FOUND) {
+                if (search_by_NSG(student, count, search_id, 's', scanf_info) != OK) {
                     printf("No students with this surname\n");
                 }
                 print_menu();
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
                 printf("Enter the name (not longer 512): \n");
                 scanf("%s", scanf_info);
                 printf("Search by group.. \n");
-                if (search_by_NSG(student, count, search_id, 'n', scanf_info) == NOT_FOUND) {
+                if (search_by_NSG(student, count, search_id, 'n', scanf_info) != OK) {
                     printf("No students with this name\n");
                 }
                 print_menu();
@@ -137,7 +137,7 @@ int main(int argc, char *argv[]) {
                 printf("Enter the group (not longer 512): \n");
                 scanf("%s", scanf_info);
                 printf("Search by group.. \n");
-                if (search_by_NSG(student, count, search_id, 'g', scanf_info) == NOT_FOUND) {
+                if (search_by_NSG(student, count, search_id, 'g', scanf_info) != OK) {
                     printf("No students with this group\n");
                 }
                 print_menu();
@@ -430,6 +430,9 @@ error search_by_id(const Students *student, int size, unsigned int id) {
     if (!student)
         return MEMORY_ERROR;
 
+    if (id <= 0)
+        return INVALID_INPUT;
+
     for (i = 0; i < size; ++i) {
         if (student[i].id == id) {
             print_student_in_console(&student[i]);
@@ -442,9 +445,14 @@ error search_by_id(const Students *student, int size, unsigned int id) {
 
 error search_by_NSG(const Students *student, int size, unsigned int id, char nsg, const char *key) {
     int i, count = 0;
-    if (!student) return MEMORY_ERROR;
+    if (!student)
+        return MEMORY_ERROR;
 
-    if (nsg != 'n' && nsg != 's' && nsg != 'g') return INVALID_INPUT;
+    if (nsg != 'n' && nsg != 's' && nsg != 'g')
+        return INVALID_INPUT;
+
+    if (my_strlen(key) == 0)
+        return NOT_FOUND;
 
     for (i = 0; i < size; ++i) {
         if ((strcmp(student[i].surname, key) == 0 && nsg == 's')
@@ -475,6 +483,9 @@ error search_by_id_with_file(const Students *student, int size, unsigned int id,
     int i;
     if (!student || !out)
         return MEMORY_ERROR;
+
+    if (id <= 0)
+        return INVALID_INPUT;
 
     for (i = 0; i < size; ++i) {
         if (student[i].id == id) {
