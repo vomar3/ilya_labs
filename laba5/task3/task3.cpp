@@ -64,6 +64,10 @@ public:
     }
 
     static void convertation(char *string, const logical_values_array &first) {
+        if (string == nullptr) {
+            throw logic_error("Null ptr\n");
+        }
+
         int i;
         const short number_with_bits = sizeof(unsigned int) * 8;
 
@@ -115,8 +119,12 @@ int main() {
         cout << "Error: " << problem.what();
     }
 
-    logical_values_array::convertation(for_convert, a);
-    cout << "Binary representation: " << a.get_value() << " = " << for_convert << "\n";
+    try {
+        logical_values_array::convertation(for_convert, a);
+        cout << "Binary representation: " << a.get_value() << " = " << for_convert << "\n";
+    } catch (logic_error &problem) {
+        cout << "Error: " << problem.what();
+    }
 
     return 0;
 }
