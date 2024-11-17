@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
-project(ilya_laba1 C)
+project(ilya_laba1 C CXX)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -50,5 +50,9 @@ add_executable(ilya3.10 laba3/task10/task10.c)
 add_executable(ilya3.5 laba3/task5/task5.c)
 
 add_executable(ilya3.4 laba3/task4/task4.c)
+
+add_executable(ilya5.4 laba5/task4/task4.cpp)
+
+add_executable(ilya5.3 laba5/task3/task3.cpp)
 
 target_link_libraries(ilya_laba1 m)
