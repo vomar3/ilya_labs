@@ -55,4 +55,6 @@ add_executable(ilya5.4 laba5/task4/task4.cpp)
 
 add_executable(ilya5.3 laba5/task3/task3.cpp)
 
+add_executable(ilya5.1 laba5/task1/task1.cpp)
+
 target_link_libraries(ilya_laba1 m)
