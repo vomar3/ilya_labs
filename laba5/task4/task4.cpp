@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 
-using namespace std;
+//using namespace std;
 
 class Complex {
 private:
@@ -9,8 +9,8 @@ private:
     double Im;
 
 public:
-    Complex() : Re(0), Im(0) {}
-    Complex(double real, double imagine) : Re(real), Im(imagine) {}
+    //Complex() : Re(0), Im(0) {}
+    explicit Complex(double real = 0, double imagine = 0) : Re(real), Im(imagine) {}
 
 
     Complex add(const Complex &second) const {
@@ -27,7 +27,7 @@ public:
 
     Complex division(const Complex &second) const {
         if (second.Im == 0 && second.Re == 0) {
-            throw runtime_error("Division by zero\n");
+            throw std::runtime_error("Division by zero\n");
         }
 
         double division = second.Re * second.Re + second.Im * second.Im;
@@ -44,81 +44,81 @@ public:
     }
 
     void Complex_cout() const {
-        cout << Re << " + " << Im << "i";
+        std::cout << Re << " + " << Im << "i";
     }
 };
 
 int main() {
-    cout << "Empty: \n";
+    std::cout << "Empty: \n";
     Complex c1;
     c1.Complex_cout();
-    cout << "\n";
+    std::cout << "\n";
 
     Complex c2(5, 3);
     Complex c3(3, 4);
 
-    cout << "Sum of 2: \n";
+    std::cout << "Sum of 2: \n";
     c2.Complex_cout();
-    cout << " + ";
+    std::cout << " + ";
     c3.Complex_cout();
-    cout << " = ";
+    std::cout << " = ";
     Complex c4 = c2.add(c3);
     c4.Complex_cout();
-    cout << "\n";
+    std::cout << "\n";
 
-    cout << "Subtraction of 2: \n(";
+    std::cout << "Subtraction of 2: \n(";
     c2.Complex_cout();
-    cout << ") - (";
+    std::cout << ") - (";
     c3.Complex_cout();
-    cout << ") = ";
+    std::cout << ") = ";
     c4 = c2.subtraction(c3);
     c4.Complex_cout();
-    cout << "\n";
+    std::cout << "\n";
 
-    cout << "Multiplication of 2: \n(";
+    std::cout << "Multiplication of 2: \n(";
     c2.Complex_cout();
-    cout << ") * (";
+    std::cout << ") * (";
     c3.Complex_cout();
-    cout << ") = ";
+    std::cout << ") = ";
     c4 = c2.multiplication(c3);
     c4.Complex_cout();
-    cout << "\n";
+    std::cout << "\n";
 
-    cout << "Division of 2: \n(";
+    std::cout << "Division of 2: \n(";
     c2.Complex_cout();
-    cout << ") / (";
+    std::cout << ") / (";
     c3.Complex_cout();
-    cout << ") = ";
+    std::cout << ") = ";
     try {
         c4 = c2.division(c3);
         c4.Complex_cout();
-        cout << "\n";
+        std::cout << "\n";
 
-    } catch (runtime_error &problem) {
-        cout << "Error: " << problem.what();
+    } catch (std::runtime_error &problem) {
+        std::cout << "Error: " << problem.what();
     }
 
     Complex c5;
-    cout << "Division of 2: \n(";
+    std::cout << "Division of 2: \n(";
     c2.Complex_cout();
-    cout << ") / (";
+    std::cout << ") / (";
     c5.Complex_cout();
-    cout << ") = ";
+    std::cout << ") = ";
     try {
         c4 = c2.division(c5);
         c4.Complex_cout();
-        cout << "\n";
-    } catch (runtime_error &problem) {
-        cout << "Error: " << problem.what();
+        std::cout << "\n";
+    } catch (std::runtime_error &problem) {
+        std::cout << "Error: " << problem.what();
     }
 
-    cout << "Module: \n|";
+    std::cout << "Module: \n|";
     c2.Complex_cout();
-    cout << "| = " << c2.complex_abs() << "\n";
+    std::cout << "| = " << c2.complex_abs() << "\n";
 
-    cout << "Argument: \narg(";
+    std::cout << "Argument: \narg(";
     c2.Complex_cout();
-    cout << ") = " << c2.argument() << "\n";
+    std::cout << ") = " << c2.argument() << "\n";
 
 
     return 0;

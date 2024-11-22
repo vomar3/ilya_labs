@@ -1,13 +1,13 @@
 #include <iostream>
 
-using namespace std;
+//using namespace std;
 
 class logical_values_array {
 private:
     unsigned int value;
 public:
-    logical_values_array() : value(0) {}
-    logical_values_array(unsigned int num) : value(num) {}
+    //logical_values_array() : value(0) {}
+    logical_values_array(unsigned int num = 0) : value(num) {}
 
     unsigned int get_value() const {
         return value;
@@ -57,7 +57,7 @@ public:
 
     static bool get_bit(const logical_values_array &first, unsigned int bit) {
         if (bit >= sizeof(unsigned int) * 8) {
-            throw runtime_error("Bit more than size of unsigned int number\n");
+            throw std::runtime_error("Bit more than size of unsigned int number\n");
         }
 
         return (first.value >> bit) & 1;
@@ -65,7 +65,7 @@ public:
 
     static void convertation(char *string, const logical_values_array &first) {
         if (string == nullptr) {
-            throw logic_error("Null ptr\n");
+            throw std::logic_error("Null ptr\n");
         }
 
         int i;
@@ -91,39 +91,39 @@ int main() {
     char for_convert[33];
 
     logical_values_array c = logical_values_array::inversion(a);
-    cout << "Inversion: " << "~" << a.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "Inversion: " << "~" << a.get_value() << " = " << c.get_value() << "\n";
     c = logical_values_array::conjunction(a, b);
-    cout << "Conjunction: " << a.get_value() << " & " << b.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "Conjunction: " << a.get_value() << " & " << b.get_value() << " = " << c.get_value() << "\n";
     c = logical_values_array::disjunction(a, b);
-    cout << "Disjunction: " << a.get_value() << " | " << b.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "Disjunction: " << a.get_value() << " | " << b.get_value() << " = " << c.get_value() << "\n";
     c = logical_values_array::implication(a, b);
-    cout << "Implication: " << a.get_value() << " -> " << b.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "Implication: " << a.get_value() << " -> " << b.get_value() << " = " << c.get_value() << "\n";
     c = logical_values_array::coimplication(a, b);
-    cout << "Complication: " << a.get_value() << " <- " << b.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "Complication: " << a.get_value() << " <- " << b.get_value() << " = " << c.get_value() << "\n";
     c = logical_values_array::XOR(a, b);
-    cout << "XOR: " << a.get_value() << " + " << b.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "XOR: " << a.get_value() << " + " << b.get_value() << " = " << c.get_value() << "\n";
     c = logical_values_array::equivalent(a, b);
-    cout << "Equivalent: " << a.get_value() << " ~ " << b.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "Equivalent: " << a.get_value() << " ~ " << b.get_value() << " = " << c.get_value() << "\n";
     c = logical_values_array::Pier_arrow(a, b);
-    cout << "Pier_arrow: " << a.get_value() << " | " << b.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "Pier_arrow: " << a.get_value() << " | " << b.get_value() << " = " << c.get_value() << "\n";
     c = logical_values_array::Schaeffer(a, b);
-    cout << "Schaeffer: " << a.get_value() << " || " << b.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "Schaeffer: " << a.get_value() << " || " << b.get_value() << " = " << c.get_value() << "\n";
     c = logical_values_array::equals(a, b);
-    cout << "Check equals: " << a.get_value() << " == " << b.get_value() << " = " << c.get_value() << "\n";
+    std::cout << "Check equals: " << a.get_value() << " == " << b.get_value() << " = " << c.get_value() << "\n";
 
     try {
         answer = logical_values_array::get_bit( b, 2);
-        cout << "Check your bit: " << b.get_value() << " bit 2" << " = " << answer << "\n";
+        std::cout << "Check your bit: " << b.get_value() << " bit 2" << " = " << answer << "\n";
 
-    } catch (runtime_error &problem){
-        cout << "Error: " << problem.what();
+    } catch (std::runtime_error &problem){
+        std::cout << "Error: " << problem.what();
     }
 
     try {
         logical_values_array::convertation(for_convert, a);
-        cout << "Binary representation: " << a.get_value() << " = " << for_convert << "\n";
-    } catch (logic_error &problem) {
-        cout << "Error: " << problem.what();
+        std::cout << "Binary representation: " << a.get_value() << " = " << for_convert << "\n";
+    } catch (std::logic_error &problem) {
+        std::cout << "Error: " << problem.what();
     }
 
     return 0;
