@@ -120,11 +120,22 @@ public:
         return os;
     }
 
+    static pair <binary_int, binary_int> get_bites(const binary_int &answer){
+        int numb = answer.get_number();
+        size_t size = sizeof(numb) * 8;
+        size_t half = size / 2;
+
+        int high_mask = numb >> half;
+        int low_mask = (numb << half) >> half;
+
+        return pair <binary_int, binary_int> (binary_int(high_mask), binary_int(low_mask));
+    };
+
 };
 
 int main() {
 
-    binary_int c1(52), c2, c3, c4;
+    binary_int c1(52), c2, c3, c4, c5, c6;
     cout << "Number: " << c1.get_number() << "\n";
     -c1;
     cout << "-Number: " << c1.get_number() << "\n";
@@ -164,6 +175,13 @@ int main() {
     cout << "c4 = c3 << 2; ";
     cout << "c3: " << c3.get_number() << ", c4: " << c4.get_number() << "\n";
     cout << "Binary number: " << c4.get_number() << " = " << c4 << "\n";
+
+    cout << "Pair\n";
+    c4 *= 100;
+    cout << "new bin c4 " << c4 << "\n";
+    tie(c5, c6) = binary_int::get_bites(c4);
+    cout << "c4: " << c4.get_number() << " High bites: " << c5.get_number() <<  " Low bits: " << c6.get_number();
+
 
     return 0;
 }
