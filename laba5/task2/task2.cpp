@@ -92,7 +92,6 @@ public:
 
         input_stream.close();
         output_stream.close();
-
     }
 
     static std::vector<std::byte> generate_key(size_t size) {
