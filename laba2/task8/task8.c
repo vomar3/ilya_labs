@@ -68,7 +68,7 @@ void reverse(char *str) {
     if (!str)
         return;
 
-    size_t len = strlen(str);
+    size_t len = my_strlen(str);
     size_t i;
     char temp;
 
