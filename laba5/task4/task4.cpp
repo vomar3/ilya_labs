@@ -3,7 +3,7 @@
 
 //using namespace std;
 
-class Complex {
+class Complex final{
 private:
     double Re;
     double Im;
@@ -27,7 +27,7 @@ public:
 
     Complex division(const Complex &second) const {
         if (second.Im == 0 && second.Re == 0) {
-            throw std::runtime_error("Division by zero\n");
+            throw std::logic_error("Division by zero\n");
         }
 
         double division = second.Re * second.Re + second.Im * second.Im;
@@ -94,7 +94,7 @@ int main() {
         c4.Complex_cout();
         std::cout << "\n";
 
-    } catch (std::runtime_error &problem) {
+    } catch (std::logic_error &problem) {
         std::cout << "Error: " << problem.what();
     }
 
@@ -108,7 +108,7 @@ int main() {
         c4 = c2.division(c5);
         c4.Complex_cout();
         std::cout << "\n";
-    } catch (std::runtime_error &problem) {
+    } catch (std::logic_error &problem) {
         std::cout << "Error: " << problem.what();
     }
 

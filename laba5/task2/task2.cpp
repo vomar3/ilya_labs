@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <cstddef>
 
-class encoder {
+class encoder final{
 private:
     int x, y;
     std::vector<std::byte> key, S;

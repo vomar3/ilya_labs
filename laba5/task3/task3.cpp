@@ -2,7 +2,7 @@
 
 //using namespace std;
 
-class logical_values_array {
+class logical_values_array final{
 private:
     unsigned int value;
 public:
@@ -57,7 +57,7 @@ public:
 
     static bool get_bit(const logical_values_array &first, unsigned int bit) {
         if (bit >= sizeof(unsigned int) * 8) {
-            throw std::runtime_error("Bit more than size of unsigned int number\n");
+            throw std::logic_error("Bit more than size of unsigned int number\n");
         }
 
         return (first.value >> bit) & 1;
@@ -115,14 +115,14 @@ int main() {
         answer = logical_values_array::get_bit( b, 2);
         std::cout << "Check your bit: " << b.get_value() << " bit 2" << " = " << answer << "\n";
 
-    } catch (std::runtime_error &problem){
+    } catch (std::logic_error &problem){
         std::cout << "Error: " << problem.what();
     }
 
     try {
         logical_values_array::convertation(for_convert, a);
         std::cout << "Binary representation: " << a.get_value() << " = " << for_convert << "\n";
-    } catch (std::logic_error &problem) {
+    } catch (std::logic_error const &problem) {
         std::cout << "Error: " << problem.what();
     }
 

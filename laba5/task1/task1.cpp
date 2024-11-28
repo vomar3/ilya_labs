@@ -7,12 +7,12 @@ void add(int &a, int &b);
 
 void multiplication(int &a, int &b);
 
-class binary_int {
+class binary_int final{
 private:
     int number;
 public:
     //binary_int() : number(0) {}
-    explicit binary_int(int num = 0) : number(num) {}
+    explicit binary_int(int num = 0) : number(num) {} // binary_int x((int)'a') // x + 5
 
     int get_number() const {
         return number;
