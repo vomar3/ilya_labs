@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define EPS 1e-7
+
 typedef enum ERRORS{
     OK,
     INVALID_INPUT,
@@ -39,8 +41,9 @@ int my_strlen(const char *str);
 
 int main() {
 
-    int true;
+    int count = 4, i;
     int counts_of_points = 4;
+    unsigned long int answer_array[100];
     Point p1 = {0, 0};
     Point p2 = {1, 0};
     Point p3 = {0, 1};
@@ -69,12 +72,10 @@ int main() {
             return UNKNOWN_ERROR;
     }
 
-    int count = 4;
-    unsigned long int answer_array[100];
     printf("Kaprekar: \n");
     switch (Kaprekara_numbers(answer_array, 10, count, "99", "297", "703", "100")) {
         case OK:
-            for (int i = 0; i < count * 2; i += 2) {
+            for (i = 0; i < count * 2; i += 2) {
                 if (answer_array[i + 1] == 0) {
                     printf("The number %lu is the Kaprekar number\n", answer_array[i]);
                 } else {
@@ -100,14 +101,15 @@ error polynomial(double *answer, double point, unsigned int degree, ...) {
 
     va_list args;
     va_start(args, degree);
-    double coef = va_arg(args, double);
+    double coef = va_arg(args, double), gorner;
+    unsigned int i;
     if (check_overflow_double(&coef) != OK) {
         va_end(args);
         return NUMBER_OVERFLOW;
     }
-    double gorner = coef;
+    gorner = coef;
 
-    for (unsigned int i = degree; i > 0; --i) {
+    for (i = degree; i > 0; --i) {
         coef = va_arg(args, double);
         if (check_overflow_double(&coef) != OK) {
             va_end(args);
@@ -159,9 +161,10 @@ error pow_ulint(unsigned long int *res) {
 }
 
 void ulint_to_your_base(char *result, unsigned long int res, int base) {
-    int count = 0;
+    int count = 0, num, i;
+    char swap;
     while (res > 0) {
-        int num = res % base;
+        num = res % base;
         if (num > 9) {
             result[count] = num + 'A' - 10;
         } else {
@@ -172,8 +175,7 @@ void ulint_to_your_base(char *result, unsigned long int res, int base) {
         ++count;
     }
 
-    char swap;
-    for (int i = 0; i < count / 2; ++i) {
+    for (i = 0; i < count / 2; ++i) {
         swap = result[i];
         result[i] = result[count - i - 1];
         result[count - i - 1] = swap;
@@ -190,16 +192,16 @@ int my_strlen(const char *str) {
 
 error check_sum_strings(unsigned long int *answer_array, int count, char *original, unsigned long int number,
                         int base) {
-    int len = my_strlen(original);
+    int len = my_strlen(original), i;
     original[len] = '\0';
     char new[100];
+    unsigned long int num1, num2;
 
-    for (int i = 0; i < len; ++i) {
+    for (i = 0; i < len; ++i) {
         new[i] = original[i];
         new[i + 1] = '\0';
         original[i] = '0';
 
-        unsigned long int num1, num2;
         if (string_to_ulint(new, &num1, base) == OK
         && string_to_ulint(original, &num2, base) == OK) {
             if (num1 + num2 == number && num1 != 0 && num2 != 0) {
@@ -218,12 +220,14 @@ error check_sum_strings(unsigned long int *answer_array, int count, char *origin
 error Kaprekara_numbers(unsigned long int *answer_array, int base, int count, ...) {
     if (base < 2 || base > 36 || count < 1) return INVALID_INPUT;
 
+    int i;
+    unsigned long int new;
     va_list args;
     va_start(args, count);
     char number_line[BUFSIZ];
     unsigned long int number;
 
-    for (int i = 0; i < count; ++i) {
+    for (i = 0; i < count; ++i) {
         // просто считываю число, закидываю в переменную, перевожу в uns long int
         strcpy(number_line, va_arg(args, char *));
         if (string_to_ulint(number_line, &number, base) != OK) {
@@ -233,7 +237,7 @@ error Kaprekara_numbers(unsigned long int *answer_array, int base, int count, ..
         // делаю 2*i с идеей того, что в i элементе будет написано преобразовалось ли число, а в 2*i само число
         // + возведение в квадрат
         answer_array[2 * i] = number;
-        unsigned long int new = number;
+        new = number;
         if (pow_ulint(&number) != OK) {
             va_end(args);
             return NUMBER_OVERFLOW;
@@ -255,6 +259,7 @@ error Kaprekara_numbers(unsigned long int *answer_array, int base, int count, ..
 int Bulge(int count, ...) {
     if (count < 3) return 1;
 
+    int i;
     va_list args;
     double answer;
     va_start(args, count);
@@ -270,7 +275,7 @@ int Bulge(int count, ...) {
     point1 = p1;
     point2 = p2;
 
-    for (int i = 0; i < count - 3; ++i) {
+    for (i = 0; i < count - 3; ++i) {
         point1 = point2;
         point2 = p3;
         p3 = va_arg(args, Point);
@@ -292,7 +297,7 @@ int Bulge(int count, ...) {
 }
 
 int vector_product(Point p1, Point p2, Point p3) {
-    if ((((p2.x - p1.x) * (p3.y - p2.y)) - ((p2.y - p1.y) * (p3.x - p2.x))) > 0) {
+    if ((((p2.x - p1.x) * (p3.y - p2.y)) - ((p2.y - p1.y) * (p3.x - p2.x))) - EPS > 0) {
         return 1;
     } else {
         return -1;
