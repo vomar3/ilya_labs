@@ -26,9 +26,7 @@ int main() {
     found *result, *current;
     char flag = '1';
 
-    error error_code = search_str_in_files("dd\ndimon", 1, &result, "input.txt");
-
-    switch (error_code) {
+    switch (search_str_in_files("dd\ndimon", 1, &result, "input.txt")) {
         case PROBLEM_WITH_FILE:
             printf("Some files could not be opened\n");
             return PROBLEM_WITH_FILE;
@@ -43,7 +41,7 @@ int main() {
             while (current) {
                 found *next = current->next;
                 flag = 0;
-                printf("File: %s line: %d, char: %d;\n", current->file_name, current->n_line, current->n_char);
+                printf("File: %s, line: %d, char: %d;\n", current->file_name, current->n_line, current->n_char);
                 free(current->file_name);
                 free(current);
                 current = next;
@@ -160,7 +158,6 @@ error search_str_in_files(char *substring, int count_files, found **result, ...)
                     count_new_str++;
                 n_char -= (idx_substr - 1);
                 idx_substr = 0;
-                n_line -= count_new_str;
             }
             if (c == '\n') {
                 n_char = 0;
