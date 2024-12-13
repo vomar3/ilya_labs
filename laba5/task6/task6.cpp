@@ -4,330 +4,395 @@
 #include <iterator>
 #include <initializer_list>
 
-class vector final
-{
+class vector final {
 private:
     double *arr;
-    size_t _capacity, _size;
+    int capacity, size;
 
-    void _resize(size_t new_capacity)
-    {
+    void resize(int newcapacity) {
         double *resize;
-        resize = new double[new_capacity];
-        auto count = std::min(_size, new_capacity);
+        resize = new double[newcapacity];
+        auto count = std::min(size, newcapacity);
         std::copy(arr, arr + count, resize);
         delete[] arr;
         arr = resize;
-        _capacity = new_capacity;
-        _size = count;
+        capacity = newcapacity;
+        size = count;
     }
 
 public:
-    class iterator final
-    {
+    class iterator final {
+
     private:
-        double *_ptr;
+        double *ptr;
 
     public:
-        iterator(double *ptr) : _ptr{ptr} {}
-        double const &operator*() const { return *_ptr; }
-        double &operator*() { return *_ptr; }
+        iterator(double *ptr) : ptr{ptr} {}
 
-        iterator &operator++()
-        {
-            _ptr++;
+        double const &operator *() const {
+            return *ptr;
+        }
+
+        double &operator *() {
+            return *ptr;
+        }
+
+        iterator &operator ++() {
+            ptr++;
             return *this;
         }
 
-        iterator operator++(int)
-        {
+        iterator operator ++(int) {
             iterator tmp = *this;
             ++(*this);
             return tmp;
         }
 
-        iterator &operator--()
-        {
-            _ptr--;
+        iterator &operator --() {
+            ptr--;
             return *this;
         }
 
-        iterator operator--(int)
-        {
+        iterator operator --(int) {
             iterator tmp = *this;
             --(*this);
             return tmp;
         }
 
-        iterator operator+(size_t shift) const { return iterator(_ptr + shift); }
-        iterator &operator+=(size_t shift)
-        {
-            _ptr += shift;
+        iterator operator +(int shift) const {
+            return iterator(ptr + shift);
+        }
+
+        iterator &operator +=(int shift) {
+            ptr += shift;
             return *this;
         }
 
-        iterator operator-(size_t shift) const { return iterator(_ptr - shift); }
-        iterator &operator-=(size_t shift)
-        {
-            _ptr -= shift;
+        iterator operator -(int shift) const {
+            return iterator(ptr - shift);
+        }
+
+        iterator &operator -=(int shift) {
+            ptr -= shift;
             return *this;
         }
 
-        double *operator->() { return _ptr; }
-        double const *operator->() const { return _ptr; }
-        double &operator[](size_t shift)
-        {
-            return *(_ptr + shift);
-        }
-        double operator[](size_t shift) const
-        {
-            return *(_ptr + shift);
+        double *operator ->() {
+            return ptr;
         }
 
-        size_t operator-(const iterator &iter) const { return _ptr - iter._ptr; }
-        bool operator==(const iterator &iter) const { return _ptr == iter._ptr; };
-        bool operator!=(const iterator &iter) const { return _ptr != iter._ptr; };
-        bool operator>(const iterator &iter) const { return _ptr > iter._ptr; };
-        bool operator>=(const iterator &iter) const { return _ptr >= iter._ptr; };
-        bool operator<(const iterator &iter) const { return _ptr < iter._ptr; };
-        bool operator<=(const iterator &iter) const { return _ptr <= iter._ptr; };
+        double const *operator ->() const {
+            return ptr;
+        }
+
+        double &operator [](int shift) {
+            return *(ptr + shift);
+        }
+
+        double operator [](int shift) const {
+            return *(ptr + shift);
+        }
+
+        int operator -(const iterator &iter) const {
+            return ptr - iter.ptr;
+        }
+
+        bool operator ==(const iterator &iter) const {
+            return ptr == iter.ptr;
+        };
+
+        bool operator !=(const iterator &iter) const {
+            return ptr != iter.ptr;
+        };
+
+        bool operator >(const iterator &iter) const {
+            return ptr > iter.ptr;
+        };
+
+        bool operator >=(const iterator &iter) const {
+            return ptr >= iter.ptr;
+        };
+
+        bool operator <(const iterator &iter) const {
+            return ptr < iter.ptr;
+        };
+
+        bool operator <=(const iterator &iter) const {
+            return ptr <= iter.ptr;
+        };
     };
 
-    vector(size_t count_elements, double default_value) : arr{new double[count_elements]},
-                                                          _size(count_elements),
-                                                          _capacity(count_elements)
-
-    {
+    vector(int count_elements, double default_value) : arr{new double[count_elements]}, size(count_elements), capacity(count_elements) {
         std::fill_n(arr, count_elements, default_value);
     }
 
-    vector(size_t count_elements) : vector(count_elements, 0.0) {}
+    vector(int count_elements) : vector(count_elements, 0.0) {}
 
     template <typename Iterator>
-    vector(Iterator const begin, Iterator const end)
-    {
+
+    vector(Iterator const begin, Iterator const end) {
         auto distance = end - begin;
         arr = new double[distance];
-        _capacity = _size = distance;
+        capacity = size = distance;
         std::copy(begin, end, arr);
     }
 
-    vector(std::initializer_list<double> init_list) : _capacity{init_list.size()}, _size(init_list.size()),
-                                                      arr{new double[init_list.size()]}
-    {
+    vector(std::initializer_list<double> init_list) : capacity{static_cast<int>(init_list.size())}, size(init_list.size()), arr{new double[init_list.size()]} {
         std::copy(init_list.begin(), init_list.end(), arr);
     }
 
     vector(const vector &v) : vector(v.begin(), v.end()) {};
 
-    double &at(size_t index)
-    {
-        if (index < 0 || index >= _size)
+    double &at(int index) {
+        if (index < 0 || index >= size)
             throw std::range_error("Out of range");
 
         return arr[index];
     }
 
-    double const &at(size_t index) const
-    {
-        if (index < 0 || index >= _size)
+    double const &at(int index) const {
+        if (index < 0 || index >= size)
             throw std::range_error("Out of range");
 
         return arr[index];
     }
 
-    double &front()
-    {
-        if (_size == 0)
+    double &front() {
+        if (size == 0)
             throw std::range_error("Out of range");
 
         return arr[0];
     }
 
-    double const &front() const
-    {
-        if (_size == 0)
+    double const &front() const {
+        if (size == 0)
             throw std::range_error("Out of range");
 
         return arr[0];
     }
 
-    double &back()
-    {
-        if (_size == 0)
+    double &back() {
+        if (size == 0)
             throw std::range_error("Out of range");
 
-        return arr[_size - 1];
+        return arr[size - 1];
     }
 
-    double const &back() const
-    {
-        if (_size == 0)
+    double const &back() const {
+        if (size == 0)
             throw std::range_error("Out of range");
 
-        return arr[_size - 1];
+        return arr[size - 1];
     }
 
-    double *data()
-    {
+    double *data() {
         return arr;
     }
 
-    double const *data() const
-    {
+    double const *data() const {
         return arr;
     }
 
-    bool empty() const { return !_size; }
-
-    void reserve(size_t num)
-    {
-        if (num <= _capacity)
-            return;
-
-        _resize(num);
+    bool empty() const {
+        return !size;
     }
 
-    size_t capacity() const { return _capacity; }
-    size_t size() const { return _size; }
-
-    void shrink_to_fit()
-    {
-        if (_capacity <= _size)
+    void reserve(int num) {
+        if (num <= capacity)
             return;
 
-        _resize(_size);
+        resize(num);
     }
 
-    void clear() { _size = 0; }
+    int func_capacity() const {
+        return capacity;
+    }
 
-    void push_back(double elem)
-    {
-        if (_capacity == _size)
+    int func_size() const {
+        return size;
+    }
+
+    void shrink_to_fit() {
+        if (capacity <= size)
+            return;
+
+        resize(size);
+    }
+
+    void clear() {
+        size = 0;
+    }
+
+    void push_back(double elem) {
+        if (capacity == size)
         {
-            _resize(_capacity * 2);
+            resize(capacity * 2);
         }
-        arr[_size++] = elem;
+        arr[size++] = elem;
     }
 
-    void pop_back()
-    {
-        if (_size > 0)
-            --_size;
+    void pop_back() {
+        if (size > 0)
+            --size;
     }
 
-    void resize(size_t size, double elem)
-    {
-        size_t old_size = _size;
-        _resize(size);
-        if (size > old_size)
-        {
-            std::fill(arr + old_size, arr + size, elem);
+    void resize(int size, double elem) {
+        int oldsize = size;
+        resize(size);
+        if (size > oldsize) {
+            std::fill(arr + oldsize, arr + size, elem);
         }
-        _size = size;
     }
 
-    void erase(size_t index)
-    {
-        if (index >= _size)
+    void erase(int index) {
+        int i;
+
+        if (index >= size)
             return;
 
-        for (size_t i = index; i < _size - 1; ++i)
-        {
+        for (i = index; i < size - 1; ++i) {
             arr[i] = arr[i + 1];
         }
-        --_size;
+
+        --size;
     }
 
-    void insert(size_t index, double elem)
-    {
-        if (index > _size)
-        {
-            throw std::range_error("Out of range");
-        }
-        if (_size == _capacity)
-        {
-            _resize(_capacity * 2);
-        }
-        ++_size;
+    void insert(int index, double elem) {
+        int i;
 
-        for (size_t i = _size - 1; i > index; --i)
-        {
+        if (index > size)
+            throw std::range_error("Out of range");
+
+        if (size == capacity)
+            resize(capacity * 2);
+
+        ++size;
+
+        for (i = size - 1; i > index; --i) {
             arr[i] = arr[i - 1];
         }
+
         arr[index] = elem;
     }
 
-    bool operator==(vector const &v) const
-    {
-        if (_size != v._size)
+    bool operator ==(vector const &v) const {
+        int i;
+
+        if (size != v.size)
             return false;
 
-        for (size_t i = 0; i < _size; ++i)
-        {
+        for (i = 0; i < size; ++i) {
             if (arr[i] != v.arr[i])
                 return false;
         }
+
         return true;
     }
 
-    int operator<=>(vector const &v) const
-    {
-        for (size_t i = 0; i < _size && i < v._size; ++i)
-        {
+    int operator <=>(vector const &v) const {
+        int i;
+
+        for (i = 0; i < size && i < v.size; ++i) {
             if (arr[i] - v.arr[i] < -__DBL_EPSILON__)
                 return -1;
             if (arr[i] - v.arr[i] > __DBL_EPSILON__)
                 return 1;
         }
-        if (_size > v._size)
-        {
+
+        if (size > v.size)
             return 1;
-        }
-        if (_size < v._size)
+
+        if (size < v.size)
             return -1;
+
         return 0;
     }
 
-    vector &operator=(vector const &v)
-    {
-        if (this != &v)
-        {
+    vector &operator =(vector const &v) {
+        if (this != &v) {
             vector tmp(v.begin(), v.end());
             std::swap(tmp.arr, this->arr);
-            std::swap(tmp._capacity, this->_capacity);
-            std::swap(tmp._size, this->_size);
+            std::swap(tmp.capacity, this->capacity);
+            std::swap(tmp.size, this->size);
         }
+
         return *this;
     }
 
-    iterator begin() { return iterator(arr); }
-    iterator end() { return iterator(arr + size()); }
+    iterator begin() {
+        return iterator(arr);
+    }
 
-    const iterator begin() const { return iterator(arr); }
-    const iterator end() const { return iterator(arr + size()); }
+    iterator end() {
+        return iterator(arr + func_size());
+    }
 
-    ~vector()
-    {
+    const iterator begin() const {
+        return iterator(arr);
+    }
+
+    const iterator end() const {
+        return iterator(arr + func_size());
+    }
+
+    ~vector() {
         delete[] arr;
     }
 };
 
 int main()
 {
-    double arr[3] = {1, 2, 3};
     std::vector<double> v1(5, 10);
     v1.insert(v1.cbegin() + 5, 15);
     vector a{1, 2, 3, 4, 5};
     a.insert(2, 10);
-    vector b(10, 0.0);
+    vector b(10, 3.0);
 
-    for (auto elem : a)
-    {
+    for (auto elem : a) {
         std::cout << elem << std::endl;
     }
     const vector edds{9., 2., 3., 4., 5.};
-    const double &aboba = edds.at(2);
-    double &abobs = a.at(3);
+
+    if (a == b) {
+        std::cout << "Vector a = b" << std::endl;
+    } else {
+        std::cout << "Vector a != b" << std::endl;
+    }
+
+    a.push_back(52);
+    for (auto elem : a) {
+        std::cout << elem << std::endl;
+    }
+
+    a.pop_back();
+    for (auto elem : a) {
+        std::cout << elem << std::endl;
+    }
+
+    std::cout << a.func_size() << std::endl;
+    std::cout << a.func_capacity() << std::endl;
+    std::cout << a.end() - a.begin() << std::endl;
+
+    const double &check = edds.at(3);
+    std::cout << "check " << check << std::endl;
+
+    double &check_a = a.at(4);
+    std::cout << check_a << std::endl;
+
+    std::cout << a.empty() << std::endl;
+
+    vector::iterator it = a.begin();
+    std::cout << "Start: " << *it << std::endl;
+
+    vector::iterator tmp = it++;
+    std::cout << "it++: " << *it << std::endl;
+    std::cout << "tmp: " << *tmp << std::endl;
+    tmp += 1;
+    std::cout << "tmp: " << *tmp << std::endl;
+
+    a = b;
+    for (auto elem : a) {
+        std::cout << elem << std::endl;
+    }
     return 0;
 }
