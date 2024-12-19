@@ -340,8 +340,7 @@ public:
     }
 };
 
-int main()
-{
+int main() {
     std::vector<double> v1(5, 10);
     v1.insert(v1.cbegin() + 5, 15);
     vector a{1, 2, 3, 4, 5};

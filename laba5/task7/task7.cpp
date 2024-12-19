@@ -238,8 +238,7 @@ public:
     }
 };
 
-int main()
-{
+int main() {
     Warehouse whouse;
     whouse += std::make_shared<PerishableProduct>("Banana", 0, 10, 100, 250, 8);
     whouse += std::make_shared<PerishableProduct>("Pork", 10, 3, 999, 2000, 5);
