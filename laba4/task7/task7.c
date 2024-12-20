@@ -223,22 +223,22 @@ int string_equivalence_relation(const String *str_1, const String *str_2) {
     return strcmp(str_1->arr, str_2->arr) == 0;
 }
 
-error string_dup(String *dest, const String *sourse) {
-    if (!dest || !sourse)
+error string_dup(String *dest, const String *source) {
+    if (!dest || !source)
         return MEMORY_ERROR;
 
-    dest->capacity = sourse->capacity;
-    dest->len = sourse->len;
+    dest->capacity = source->capacity;
+    dest->len = source->len;
 
-    if (!sourse->arr) {
+    if (!source->arr) {
         dest->arr = NULL;
         return OK;
     }
 
-    dest->arr = (char *) malloc(sourse->capacity * sizeof(char));
+    dest->arr = (char *) malloc(source->capacity * sizeof(char));
     if (!dest->arr)
         return MEMORY_ERROR;
-    strcpy(dest->arr, sourse->arr);
+    strcpy(dest->arr, source->arr);
 
     return OK;
 }
